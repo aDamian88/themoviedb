@@ -3,6 +3,9 @@ package gr.advantage.adam.themoviedb;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +13,8 @@ import android.widget.Button;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -24,6 +29,9 @@ import static android.support.constraint.Constraints.TAG;
 public class SearchActivity extends AppCompatActivity {
 
     Button btSearch;
+    private final ArrayList<Movie> movies = new ArrayList<>();
+    private RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +45,24 @@ public class SearchActivity extends AppCompatActivity {
                 makeSearchCall();
             }
         });
+
+        recyclerView = findViewById(R.id.recycler_movie_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.isClickable();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.stopScroll();
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.setFocusable(false);
     }
 
     private static OkHttpClient okClient() {
         return new OkHttpClient.Builder().connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES).readTimeout(60, TimeUnit.MINUTES).build();
     }
 
-    private void makeSearchCall(){
+    private void makeSearchCall() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
-        Call<JsonObject> call = api.getSearchResult( Api.BASE_URL + "3/search/multi?api_key=6b2e856adafcc7be98bdf0d8b076851c&query=harry potter&page=1");
+        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "3/search/multi?api_key=6b2e856adafcc7be98bdf0d8b076851c&query=harry potter&page=1");
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
@@ -55,6 +71,9 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: emptyResponse");
                 } else {
                     Log.d(TAG, "onResponse: successful response " + String.valueOf(response.body()));
+                    Movie movie = new Movie();
+                    movies.addAll(movie.getMovieFromResponse(String.valueOf(response.body())));
+                    initMovieList();
                 }
             }
 
@@ -63,5 +82,10 @@ public class SearchActivity extends AppCompatActivity {
                 Log.e("TAG", "CL service response onFailure: " + t.toString());
             }
         });
+    }
+
+    private void initMovieList() {
+        RecyclerView.Adapter adapter = new MovieListAdapter(movies, this, "Movie");
+        recyclerView.setAdapter(adapter);
     }
 }
