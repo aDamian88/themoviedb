@@ -6,6 +6,7 @@
     android:layout_height="120dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp">
+    <!--android:background="#081c24"-->
 
     <LinearLayout
         android:id="@+id/object_linear_layout"
@@ -50,10 +51,10 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="25dp"
                     android:text="test"
                     android:textColor="#01d277"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:textStyle="bold" />
 
 
@@ -75,35 +76,9 @@
                     android:id="@+id/tv_movie1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom|left"
+                    android:layout_below="@+id/tv_title"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="0dp"
-                    android:textColor="#ffff"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_movie2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toEndOf="@+id/tv_movie1"
-                    android:layout_toRightOf="@+id/tv_movie1"
-                    android:paddingLeft="4dp"
-                    android:text="Tex2"
-                    android:textColor="#ffff"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_movie3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toEndOf="@+id/tv_movie2"
-                    android:layout_toRightOf="@+id/tv_movie2"
-                    android:paddingLeft="4dp"
                     android:text="test"
                     android:textColor="#ffff"
                     android:textSize="15dp"
