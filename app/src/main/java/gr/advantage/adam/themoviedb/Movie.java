@@ -18,6 +18,7 @@ public class Movie {
     String release;
     String rating;
     String votes;
+    String type;
 
     public Integer getId() {
         return id;
@@ -67,6 +68,14 @@ public class Movie {
         this.votes = votes;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public ArrayList<Movie> getMovieFromResponse(String response) {
         ArrayList<Movie> movies = new ArrayList<>();
         try {
@@ -85,10 +94,12 @@ public class Movie {
     private Movie setDataFromJson(JSONObject jsonResults){
         Movie movie = new Movie();
         try {
+            movie.setId(jsonResults.getInt("id"));
             movie.setImage(jsonResults.getString("poster_path"));
             movie.setTitle(jsonResults.getString("title"));
             movie.setRelease(jsonResults.getString("release_date"));
             movie.setRating(jsonResults.getString("vote_average"));
+            movie.setType(jsonResults.getString("media_type"));
             setVotes(jsonResults.getString("vote_count"));
         } catch (JSONException e) {
             e.printStackTrace();
