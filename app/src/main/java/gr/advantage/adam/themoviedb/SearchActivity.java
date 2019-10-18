@@ -8,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -28,9 +30,11 @@ import static android.support.constraint.Constraints.TAG;
 
 public class SearchActivity extends AppCompatActivity {
 
-    Button btSearch;
+    private Button btSearch;
+    private EditText edtSearch;
     private final ArrayList<Movie> movies = new ArrayList<>();
     private RecyclerView recyclerView;
+    private String search;
 
 
     @Override
@@ -38,11 +42,15 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        edtSearch = findViewById(R.id.search);
+
         btSearch = findViewById(R.id.bt_search);
         btSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                makeSearchCall();
+                search = edtSearch.getText().toString();
+                Log.d(TAG, "onClick: search " + String.valueOf(search));
+                makeSearchCall(search);
             }
         });
 
@@ -53,16 +61,20 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.stopScroll();
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setFocusable(false);
+
+        edtSearch.clearFocus();
+
     }
 
     private static OkHttpClient okClient() {
         return new OkHttpClient.Builder().connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES).readTimeout(60, TimeUnit.MINUTES).build();
     }
 
-    private void makeSearchCall() {
+    private void makeSearchCall(String search) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
-        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "3/search/multi?api_key=6b2e856adafcc7be98bdf0d8b076851c&query=harry potter&page=1");
+        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/multi?api_key="+Api.AUTH_KEY+"&query="+search+"&page=1");
+        Log.d(TAG, "makeSearchCall: " + String.valueOf(call.request()));
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
