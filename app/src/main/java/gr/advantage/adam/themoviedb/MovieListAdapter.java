@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
@@ -37,17 +38,20 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull gr.advantage.adam.themoviedb.MovieListAdapter.ViewHolder holder, final int position) {
         final Movie cardListItem = cardList.get(position);
-        holder.objectName.setText(cardListItem.getTitle());
 
+        holder.objectName.setText(cardListItem.getTitle());
+        holder.releaseDate.setText(cardListItem.getRelease());
+        holder.ratings.setText(cardListItem.getRating() + "% ");
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    String title= cardListItem.getTitle();
-                    Intent myIntent = new Intent(context, DetailsActivity.class);
-                    myIntent.putExtra("title",title);
-                    context.startActivity(myIntent);
-
+                Integer id = cardListItem.getId();
+                Intent myIntent = new Intent(context, DetailsActivity.class);
+                myIntent.putExtra("id", id);
+                String type = cardListItem.getType();
+                myIntent.putExtra("type", type);
+                context.startActivity(myIntent);
             }
         });
 
@@ -60,14 +64,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView objectName, totalStreets, userStreets,tvDistricts;
+        public TextView objectName, releaseDate, ratings;
         public LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            objectName = (TextView) itemView.findViewById(R.id.tv_title);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.object_linear_layout);
+            objectName = itemView.findViewById(R.id.tv_title);
+            releaseDate = itemView.findViewById(R.id.tv_movie1);
+            ratings = itemView.findViewById(R.id.tv_movie_right);
+            linearLayout = itemView.findViewById(R.id.object_linear_layout);
 
         }
     }
