@@ -3,6 +3,7 @@ package gr.advantage.adam.themoviedb;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +31,7 @@ import static android.support.constraint.Constraints.TAG;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private Button btSearch;
+    private CardView cardSearch;
     private EditText edtSearch;
     private final ArrayList<Movie> movies = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -44,8 +45,8 @@ public class SearchActivity extends AppCompatActivity {
 
         edtSearch = findViewById(R.id.search);
 
-        btSearch = findViewById(R.id.bt_search);
-        btSearch.setOnClickListener(new View.OnClickListener() {
+        cardSearch = findViewById(R.id.cardSearch);
+        cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 search = edtSearch.getText().toString();
