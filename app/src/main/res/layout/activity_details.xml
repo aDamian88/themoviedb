@@ -1,86 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailsActivity">
 
-    <android.support.v7.widget.Toolbar
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         tools:ignore="MissingConstraints">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardBack"
-            android:layout_width="70dp"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardHome"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="10"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#6699cc">
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="?attr/colorPrimary">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="<"
-                android:textColor="#ffff"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvBack"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="4dp"
-                android:shadowColor="#000000"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2"
-                android:text="back"
-                android:textColor="#ffff"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.CardView>
+                android:layout_weight="10"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_screen_title"
-            android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/im_home"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:contentDescription="image_description"
+                    app:srcCompat="@mipmap/back" />
+
+                <TextView
+                    android:id="@+id/tv_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="button_back"
+                    android:textColor="?attr/colorPrimaryDark"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardArea"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:shadowColor="#000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1"
-            android:text=" "
-            android:textColor="#ffcc00"
-            android:textSize="22dp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="10"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="?attr/colorPrimary">
 
-        <TextView
-            android:id="@+id/tv_right_title"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="10"
+                android:orientation="vertical">
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardHunt"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="8dp"
-            android:shadowColor="#000000"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text=" "
-            android:textColor="#ffff"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="10"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="?attr/colorPrimary">
 
-    </android.support.v7.widget.Toolbar>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+                <ImageView
+                    android:id="@+id/im_start"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:contentDescription="image_description"
+                    app:srcCompat="@mipmap/favoriteblank" />
+
+                <TextView
+                    android:id="@+id/tv_start_tour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="button_favorite"
+                    android:textColor="?attr/colorPrimaryDark"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toTopOf="@+id/bottom_toolbar"
         app:cardCornerRadius="8dp"
@@ -105,24 +149,24 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView_movie"
+                    android:id="@+id/im_movie"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="250dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="3dp"
-                    android:layout_weight=".20"
+                    android:layout_weight=".40"
                     app:srcCompat="@drawable/citym" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginLeft="15dp"
-                    android:layout_weight=".80"
+                    android:layout_weight=".60"
                     android:orientation="vertical"
                     android:paddingBottom="8dp">
 
@@ -152,7 +196,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_movie1"
+                        android:id="@+id/tv_movie_summary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_title"
@@ -169,16 +213,16 @@
             </LinearLayout>
 
             <View
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_gravity="bottom|right"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom|center"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
                 android:background="#01d277" />
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <include
         android:id="@+id/bottom_toolbar"
@@ -188,4 +232,4 @@
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
