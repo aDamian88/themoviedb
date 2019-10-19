@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffff"
+    android:background="@color/colorAccent"
     tools:context=".SearchActivity">
 
     <LinearLayout
         android:id="@+id/search_toolbar"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:background="#cc9966"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,37 +20,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="4dp">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_username"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.7"
-
-                android:textColorHint="?attr/colorPrimary"
+                android:textColorHint="?attr/colorPrimaryDark"
                 tools:ignore="MissingConstraints">
 
 
                 <EditText
                     android:id="@+id/search"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:backgroundTint="#000000"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="?attr/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorAccent"
                     android:hint="@string/search"
                     android:singleLine="true"
-                    android:textColor="#000000"
-                    android:textColorHint="#000000"
-                    android:textColorLink="#000000"
-                    android:textSize="25dp"
+                    android:textColor="?attr/colorPrimaryDark"
+                    android:textColorHint="?attr/colorPrimaryDark"
+                    android:textColorLink="?attr/colorPrimaryDark"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
             </android.support.design.widget.TextInputLayout>
 
 
-            <Button
-                android:id="@+id/bt_search"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardSearch"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="0.3"
@@ -59,7 +60,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.059" />
+                app:layout_constraintVertical_bias="0.059"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/colorPrimaryDark">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
+
+            </android.support.v7.widget.CardView>
+
+
 
         </LinearLayout>
 
@@ -88,5 +103,14 @@
         app:layout_constraintTop_toBottomOf="@+id/search_toolbar">
 
     </android.support.v7.widget.RecyclerView>
+
+    <include
+        android:id="@+id/bottom_toolbar"
+        layout="@layout/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
