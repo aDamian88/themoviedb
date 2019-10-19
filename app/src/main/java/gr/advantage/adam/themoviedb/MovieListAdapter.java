@@ -2,30 +2,29 @@ package gr.advantage.adam.themoviedb;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
+import com.bumptech.glide.Glide;
 
-import static android.support.constraint.Constraints.TAG;
+import java.util.List;
 
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
-    private List<Movie> cardList;
+    private List<SearchObject> cardList;
     private Context context;
-    private String nextObject;
 
-    public MovieListAdapter(List<Movie> cardList, Context context, String nextObject) {
+    public MovieListAdapter(List<SearchObject> cardList, Context context) {
         this.cardList = cardList;
         this.context = context;
-        this.nextObject = nextObject;
     }
 
     @NonNull
@@ -37,11 +36,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull gr.advantage.adam.themoviedb.MovieListAdapter.ViewHolder holder, final int position) {
-        final Movie cardListItem = cardList.get(position);
+        final SearchObject cardListItem = cardList.get(position);
 
         holder.objectName.setText(cardListItem.getTitle());
         holder.releaseDate.setText(cardListItem.getRelease());
         holder.ratings.setText(cardListItem.getRating() + "% ");
+        Glide.with(context).load(Api.POSTER_URL+cardListItem.getImage()).into(holder.poster);
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,10 +66,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         public TextView objectName, releaseDate, ratings;
         public LinearLayout linearLayout;
+        public ImageView poster;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            poster = itemView.findViewById(R.id.im_movie);
             objectName = itemView.findViewById(R.id.tv_title);
             releaseDate = itemView.findViewById(R.id.tv_movie1);
             ratings = itemView.findViewById(R.id.tv_movie_right);

@@ -8,17 +8,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.support.constraint.Constraints.TAG;
-
 public class Movie {
 
     Integer id;
     String image;
     String title;
-    String release;
-    String rating;
-    String votes;
-    String type;
+    String summary;
 
     public Integer getId() {
         return id;
@@ -44,66 +39,30 @@ public class Movie {
         this.title = title;
     }
 
-    public String getRelease() {
-        return release;
+
+    public String getSummary() {
+        return summary;
     }
 
-    public void setRelease(String release) {
-        this.release = release;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
-    public String getVotes() {
-        return votes;
-    }
-
-    public void setVotes(String votes) {
-        this.votes = votes;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public ArrayList<Movie> getMovieFromResponse(String response) {
-        ArrayList<Movie> movies = new ArrayList<>();
-        try {
-            JSONObject jsonResponse = new JSONObject(response);
-            JSONArray arrayResults = jsonResponse.getJSONArray("results");
-            for (int i = 0; i < arrayResults.length(); i++) {
-                JSONObject jsonResults = arrayResults.getJSONObject(i);
-                movies.add(setDataFromJson(jsonResults));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return movies;
-    }
-
-    private Movie setDataFromJson(JSONObject jsonResults){
+    public Movie decodingMovie(String response){
         Movie movie = new Movie();
         try {
-            movie.setId(jsonResults.getInt("id"));
-            movie.setImage(jsonResults.getString("poster_path"));
-            movie.setTitle(jsonResults.getString("title"));
-            movie.setRelease(jsonResults.getString("release_date"));
-            movie.setRating(jsonResults.getString("vote_average"));
-            movie.setType(jsonResults.getString("media_type"));
-            setVotes(jsonResults.getString("vote_count"));
+            JSONObject jsonResponse = new JSONObject(response);
+            movie.setImage(jsonResponse.getString("poster_path"));
+            movie.setTitle(jsonResponse.getString("title"));
+            movie.setSummary(jsonResponse.getString("overview"));
+            Log.d("TAG", "decodingMovie: genres " + jsonResponse.getString("genres"));
+            //decode genre only first
+            Log.d("TAG", "decodingMovie: video " + jsonResponse.getString("video"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return movie;
     }
+
+
 }
