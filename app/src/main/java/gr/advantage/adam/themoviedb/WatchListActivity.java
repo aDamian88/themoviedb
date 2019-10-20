@@ -14,7 +14,13 @@ public class WatchListActivity extends AppCompatActivity {
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
     private RecyclerView recyclerView;
     private final BottomMenu bottomMenu = new BottomMenu(this);
+    GeneralHelper generalHelper = new GeneralHelper();
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        generalHelper.deleteTemporaryObjects(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class WatchListActivity extends AppCompatActivity {
         initMovieList();
         bottomMenu.initBottomMenu(this);
 
+        generalHelper.deleteTemporaryObjects(this);
     }
 
     private void initMovieList() {

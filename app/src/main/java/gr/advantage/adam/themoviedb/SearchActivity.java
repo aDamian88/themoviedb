@@ -34,11 +34,12 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String search;
     private final BottomMenu bottomMenu = new BottomMenu(this);
+    private final GeneralHelper generalHelper = new GeneralHelper();
 
     @Override
     protected void onResume() {
         super.onResume();
-        deleteTemporaryObjects();
+        generalHelper.deleteTemporaryObjects(this);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setFocusable(false);
 
-        deleteTemporaryObjects();
+        generalHelper.deleteTemporaryObjects(this);
         bottomMenu.initBottomMenu(this);
 
     }
@@ -109,8 +110,4 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void deleteTemporaryObjects(){
-        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(this);
-        myAppDatabase.MyDao().deleteTemporarySavedObjects(true);
-    }
 }
