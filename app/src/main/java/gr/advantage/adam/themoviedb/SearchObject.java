@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity(tableName = "Favorites",primaryKeys = {"id","type"})
 public class SearchObject {
@@ -86,9 +87,14 @@ public class SearchObject {
         isTemporary = temporary;
     }
 
+    public List<SearchObject> getSearchObjectFromDatabase(Context context){
+        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(context);
+        return myAppDatabase.MyDao().getSearchObjects();
+    }
+
     @Ignore
     public ArrayList<SearchObject> getSearchObjectFromResponse(String response) {
-        ArrayList<SearchObject> SearchObjects = new ArrayList<>();
+        ArrayList<SearchObject> searchObjects = new ArrayList<>();
         try {
             JSONObject jsonResponse = new JSONObject(response);
             JSONArray arrayResults = jsonResponse.getJSONArray("results");
@@ -96,13 +102,13 @@ public class SearchObject {
                 JSONObject jsonResults = arrayResults.getJSONObject(i);
                 // Checking if media_type is person to not decode it, we need only Movies and Tv Shows.
                 if (!jsonResults.getString("media_type").equals("person")) {
-                    SearchObjects.add(setDataFromJson(jsonResults));
+                    searchObjects.add(setDataFromJson(jsonResults));
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return SearchObjects;
+        return searchObjects;
     }
 
     @Ignore
@@ -131,4 +137,5 @@ public class SearchObject {
         MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(context);
         myAppDatabase.MyDao().addSearchObject(this);
     }
+
 }

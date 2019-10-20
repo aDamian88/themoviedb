@@ -5,6 +5,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Dao
 public interface MyDao {
 
@@ -23,5 +26,8 @@ public interface MyDao {
 
     @Query("select is_temporary from Favorites where id=:objectId and type=:objectType")
     boolean getObjectStatus(Integer objectId,String objectType);
+
+    @Query("select * from Favorites")
+    List<SearchObject> getSearchObjects();
 
 }
