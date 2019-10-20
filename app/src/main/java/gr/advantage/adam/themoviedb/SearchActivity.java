@@ -35,6 +35,12 @@ public class SearchActivity extends AppCompatActivity {
     private String search;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        deleteTemporaryObjects();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
@@ -60,6 +66,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setFocusable(false);
 
+        deleteTemporaryObjects();
 
     }
 
@@ -98,5 +105,10 @@ public class SearchActivity extends AppCompatActivity {
     private void initMovieList() {
         RecyclerView.Adapter adapter = new MovieListAdapter(searchObjects, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void deleteTemporaryObjects(){
+        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(this);
+        myAppDatabase.MyDao().deleteTemporarySavedObjects(true);
     }
 }

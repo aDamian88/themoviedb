@@ -30,7 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
     private CardView cardSave;
     private Movie movie;
     private TvShow tvShow;
-    private boolean saveInstance = false;
+    private boolean saveInstance;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -59,23 +59,23 @@ public class DetailsActivity extends AppCompatActivity {
         cardSave = findViewById(R.id.cardSave);
         final ImageView imSave = findViewById(R.id.im_save);
 
-        Log.d("TAG", "onCreate: favorite " + String.valueOf(myAppDatabase.MyDao().checkIfObjectIsStored(id,type,false)>0));
-        if(myAppDatabase.MyDao().checkIfObjectIsStored(id,type,false)>0){
+        saveInstance = myAppDatabase.MyDao().getObjectStatus(id,type);
+
+        if(!saveInstance){
             imSave.setBackgroundResource(R.mipmap.favorite);
         }
+
         cardSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveInstance = myAppDatabase.MyDao().getObjectStatus(id,type);
                 if(!saveInstance) {
-                    saveInstance = true;
+                    myAppDatabase.MyDao().updateTemporaryStatus(id,type,true);
+                    imSave.setBackgroundResource(R.mipmap.favoriteblank);
+                }else{
                     myAppDatabase.MyDao().updateTemporaryStatus(id,type,false);
                     imSave.setBackgroundResource(R.mipmap.favorite);
 
-                    //set icon
-                }else{
-                    saveInstance = false;
-                    myAppDatabase.MyDao().updateTemporaryStatus(id,type,true);
-                    imSave.setBackgroundResource(R.mipmap.favoriteblank);
                 }
             }
         });
