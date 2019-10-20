@@ -1,19 +1,34 @@
 package gr.advantage.adam.themoviedb;
 
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-
+@Entity(tableName = "Favorites",primaryKeys = {"id","type"})
 public class SearchObject {
 
+    @NonNull
     Integer id;
-    String image;
-    String title;
-    String release;
-    String rating;
+    @NonNull
     String type;
+    @ColumnInfo(name="image")
+    String image;
+    @ColumnInfo(name="title")
+    String title;
+    @ColumnInfo(name="release")
+    String release;
+    @ColumnInfo(name="rating")
+    String rating;
+    @ColumnInfo(name="is_temporary")
+    boolean isTemporary;
 
     public Integer getId() {
         return id;
@@ -63,8 +78,15 @@ public class SearchObject {
         this.type = type;
     }
 
+    public boolean isTemporary() {
+        return isTemporary;
+    }
 
+    public void setTemporary(boolean temporary) {
+        isTemporary = temporary;
+    }
 
+    @Ignore
     public ArrayList<SearchObject> getSearchObjectFromResponse(String response) {
         ArrayList<SearchObject> SearchObjects = new ArrayList<>();
         try {
@@ -72,12 +94,10 @@ public class SearchObject {
             JSONArray arrayResults = jsonResponse.getJSONArray("results");
             for (int i = 0; i < arrayResults.length(); i++) {
                 JSONObject jsonResults = arrayResults.getJSONObject(i);
-
                 // Checking if media_type is person to not decode it, we need only Movies and Tv Shows.
                 if (!jsonResults.getString("media_type").equals("person")) {
                     SearchObjects.add(setDataFromJson(jsonResults));
                 }
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -85,6 +105,7 @@ public class SearchObject {
         return SearchObjects;
     }
 
+    @Ignore
     private SearchObject setDataFromJson(JSONObject jsonResults) {
         SearchObject SearchObject = new SearchObject();
         try {
@@ -104,5 +125,10 @@ public class SearchObject {
             e.printStackTrace();
         }
         return SearchObject;
+    }
+
+    public void saveSearchObject(Context context){
+        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(context);
+        myAppDatabase.MyDao().addSearchObject(this);
     }
 }
