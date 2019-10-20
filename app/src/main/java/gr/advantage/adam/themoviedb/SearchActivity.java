@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
@@ -58,13 +59,15 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.stopScroll();
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setFocusable(false);
+
+
     }
 
     private static OkHttpClient okClient() {
         return new OkHttpClient.Builder().connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES).readTimeout(60, TimeUnit.MINUTES).build();
     }
 
-    private void makeSearchCall(String search) {
+    private void makeSearchCall(final String search) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
         Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/multi?api_key="+Api.AUTH_KEY+"&query="+search+"&page=1");
@@ -75,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 if (String.valueOf(response.body()).equals("[]")) {
                     Log.d("TAG", "onResponse: emptyResponse");
+                    Toast.makeText(SearchActivity.this,"No results",Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("TAG", "onResponse: successful response " + String.valueOf(response.body()));
                     SearchObject searchObject = new SearchObject();
