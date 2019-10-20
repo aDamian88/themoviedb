@@ -1,12 +1,9 @@
 package gr.advantage.adam.themoviedb;
 
 import android.util.Log;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
 public class Movie {
 
@@ -52,6 +49,7 @@ public class Movie {
         Movie movie = new Movie();
         try {
             JSONObject jsonResponse = new JSONObject(response);
+            movie.setId(jsonResponse.getInt("id"));
             movie.setImage(jsonResponse.getString("poster_path"));
             movie.setTitle(jsonResponse.getString("title"));
             movie.setSummary(jsonResponse.getString("overview"));
@@ -63,6 +61,4 @@ public class Movie {
         }
         return movie;
     }
-
-
 }

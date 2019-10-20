@@ -47,6 +47,7 @@ public class TvShow {
         TvShow tvShow = new TvShow();
         try {
             JSONObject jsonResponse = new JSONObject(response);
+            tvShow.setId(jsonResponse.getInt("id"));
             tvShow.setImage(jsonResponse.getString("poster_path"));
             tvShow.setTitle(jsonResponse.getString("original_name"));
             tvShow.setSummary(jsonResponse.getString("overview"));
