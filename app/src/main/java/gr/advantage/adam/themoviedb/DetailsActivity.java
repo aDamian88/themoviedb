@@ -3,8 +3,11 @@ package gr.advantage.adam.themoviedb;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -23,15 +26,20 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView tvSummary;
     private TextView tvGenre;
     private ImageView imPoster;
+    private MyAppDatabase myAppDatabase;
+    private CardView cardSave;
+    private Movie movie;
+    private TvShow tvShow;
+    private boolean saveInstance = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
         Intent intent = getIntent();
-        Integer id = (Integer) intent.getSerializableExtra("id");
-        String type = (String) intent.getSerializableExtra("type");
+        final Integer id = (Integer) intent.getSerializableExtra("id");
+        final String type = (String) intent.getSerializableExtra("type");
 
         tvTitle = findViewById(R.id.tv_title);
         tvSummary = findViewById(R.id.tv_movie_summary);
@@ -45,6 +53,32 @@ public class DetailsActivity extends AppCompatActivity {
             url = "tv/"+id+"?api_key="+Api.AUTH_KEY;
             callToApi(url,type);
         }
+
+        final MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(this);
+
+        cardSave = findViewById(R.id.cardSave);
+        final ImageView imSave = findViewById(R.id.im_save);
+
+        Log.d("TAG", "onCreate: favorite " + String.valueOf(myAppDatabase.MyDao().checkIfObjectIsStored(id,type,false)>0));
+        if(myAppDatabase.MyDao().checkIfObjectIsStored(id,type,false)>0){
+            imSave.setBackgroundResource(R.mipmap.favorite);
+        }
+        cardSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!saveInstance) {
+                    saveInstance = true;
+                    myAppDatabase.MyDao().updateTemporaryStatus(id,type,false);
+                    imSave.setBackgroundResource(R.mipmap.favorite);
+
+                    //set icon
+                }else{
+                    saveInstance = false;
+                    myAppDatabase.MyDao().updateTemporaryStatus(id,type,true);
+                    imSave.setBackgroundResource(R.mipmap.favoriteblank);
+                }
+            }
+        });
     }
 
     private static OkHttpClient okClient() {
@@ -63,10 +97,10 @@ public class DetailsActivity extends AppCompatActivity {
                 } else {
                     Log.d("TAG", "onResponse: " + String.valueOf(response.body()));
                     if(type.equals("movie")){
-                        Movie movie = new Movie();
+                        movie = new Movie();
                         displayMovieData(movie.decodingMovie(response.body().toString()));
                     }else{
-                        TvShow tvShow = new TvShow();
+                        tvShow = new TvShow();
                         displayTvShowData(tvShow.decodingTvShow(response.body().toString()));
                     }
                 }

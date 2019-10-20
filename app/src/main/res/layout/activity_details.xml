@@ -80,7 +80,7 @@
 
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardHunt"
+            android:id="@+id/cardSave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
@@ -98,7 +98,7 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/im_start"
+                    android:id="@+id/im_save"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
@@ -107,12 +107,12 @@
                     app:srcCompat="@mipmap/favoriteblank" />
 
                 <TextView
-                    android:id="@+id/tv_start_tour"
+                    android:id="@+id/tv_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="button_favorite"
+                    android:text="@string/save"
                     android:textColor="?attr/colorPrimaryDark"
                     android:textSize="12dp" />
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
@@ -46,6 +49,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveItemTemporary(cardListItem);
                 Integer id = cardListItem.getId();
                 Intent myIntent = new Intent(context, DetailsActivity.class);
                 myIntent.putExtra("id", id);
@@ -79,4 +83,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         }
     }
+
+    private void saveItemTemporary(SearchObject searchObject){
+        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabase(context);
+        Log.d(TAG, "saveItemTemporary: "+ searchObject.getTitle()+" " + String.valueOf(myAppDatabase.MyDao().checkIfObjectIsStored(searchObject.getId(),searchObject.getType(),false)));
+        if(myAppDatabase.MyDao().checkIfObjectIsStored(searchObject.getId(),searchObject.getType(),false)==0) {
+            searchObject.setTemporary(true);
+            searchObject.saveSearchObject(context);
+        }
+    }
+
+
 }
