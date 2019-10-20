@@ -15,7 +15,7 @@
 
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardHome"
+            android:id="@+id/cardTrailer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
@@ -34,21 +34,21 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/im_home"
+                    android:id="@+id/im_trailer"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:contentDescription="image_description"
-                    app:srcCompat="@mipmap/back" />
+                    app:srcCompat="@mipmap/trailer" />
 
                 <TextView
-                    android:id="@+id/tv_home"
+                    android:id="@+id/tv_trailer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="button_back"
+                    android:text="@string/trailer"
                     android:textColor="?attr/colorPrimaryDark"
                     android:textSize="12dp" />
 
@@ -209,9 +209,7 @@
 
                 </RelativeLayout>
 
-
             </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"

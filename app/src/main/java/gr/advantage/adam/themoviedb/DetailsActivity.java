@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
+
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -28,10 +31,12 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView imPoster;
     private MyAppDatabase myAppDatabase;
     private CardView cardSave;
+    private CardView cardTrailer;
     private Movie movie;
     private TvShow tvShow;
     private boolean saveInstance;
     private final BottomMenu bottomMenu = new BottomMenu(this);
+    private final TrailerHandler trailerHandler = new TrailerHandler(this);
 
 
     @Override
@@ -58,6 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         final MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(this);
 
+        //// Handle save ///////////
         cardSave = findViewById(R.id.cardSave);
         final ImageView imSave = findViewById(R.id.im_save);
 
@@ -79,6 +85,16 @@ public class DetailsActivity extends AppCompatActivity {
                     imSave.setBackgroundResource(R.mipmap.favorite);
 
                 }
+            }
+        });
+        /////////////////////////////////////
+
+        /////////// Handle trailer /////////
+        cardTrailer = findViewById(R.id.cardTrailer);
+        cardTrailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callTrailer(id,type);
             }
         });
 
@@ -128,6 +144,30 @@ public class DetailsActivity extends AppCompatActivity {
         tvSummary.setText(tvShow.getSummary());
         Glide.with(this).load(Api.POSTER_URL+tvShow.getImage()).into(imPoster);
     }
+
+    private void callTrailer(Integer id, String type){
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
+        Api api = retrofit.create(Api.class);
+        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + type+"/"+id+"/"+"videos?api_key="+Api.AUTH_KEY);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
+                if (String.valueOf(response.body()).equals("[]")) {
+                    Log.d("TAG", "onResponse: emptyResponse");
+                    Toast.makeText(DetailsActivity.this,"Not available tailer",Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d("TAG", "onResponse: trailer " + String.valueOf(response.body()));
+                    trailerHandler.decodingVideoResponse(response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull Throwable t) {
+                Log.e("TAG", "search response onFailure: " + t.toString());
+            }
+        });
+    }
+
 
 
 }
