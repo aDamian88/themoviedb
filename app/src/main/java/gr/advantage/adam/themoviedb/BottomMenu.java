@@ -22,7 +22,6 @@ public class BottomMenu {
         this.context = context;
         CardView cardHome, cardWatchlist, cardAbout;
 
-//        ImageView imHunting = this.activity.findViewById(R.id.im_start);
         cardHome = this.activity.findViewById(R.id.cardHome);
         cardWatchlist = this.activity.findViewById(R.id.cardWatchlist);
         cardAbout = this.activity.findViewById(R.id.cardAbout);
@@ -31,24 +30,6 @@ public class BottomMenu {
         cardWatchlist.setOnClickListener(new BottomMenuHelper(activity));
         cardAbout.setOnClickListener(new BottomMenuHelper(activity));
 
-
-/*        cardCommunity.setOnClickListener(new HuntBottomMenu(activity));
-        cardProfile.setOnClickListener(new HuntBottomMenu(activity));
-
-        StreethuntSession testSession = (StreethuntSession) context.getApplicationContext();
-        TourSession checkTourSession = null;
-        try {
-            checkTourSession = testSession.getTourSession();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (checkTourSession != null){
-            imHunting.setImageResource(0);
-            imHunting.setBackgroundResource(R.mipmap.compasswhite);
-            TextView tvHunting = this.activity.findViewById(R.id.tv_start_tour);
-            tvHunting.setText(this.activity.getResources().getString(R.string.hunt));
-        }*/
     }
 }
 
