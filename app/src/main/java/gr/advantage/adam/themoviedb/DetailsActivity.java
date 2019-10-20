@@ -31,6 +31,8 @@ public class DetailsActivity extends AppCompatActivity {
     private Movie movie;
     private TvShow tvShow;
     private boolean saveInstance;
+    private final BottomMenu bottomMenu = new BottomMenu(this);
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        bottomMenu.initBottomMenu(this);
     }
 
     private static OkHttpClient okClient() {

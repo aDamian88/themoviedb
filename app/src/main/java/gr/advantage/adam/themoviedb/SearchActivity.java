@@ -33,6 +33,7 @@ public class SearchActivity extends AppCompatActivity {
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
     private RecyclerView recyclerView;
     private String search;
+    private final BottomMenu bottomMenu = new BottomMenu(this);
 
     @Override
     protected void onResume() {
@@ -67,6 +68,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setFocusable(false);
 
         deleteTemporaryObjects();
+        bottomMenu.initBottomMenu(this);
 
     }
 
