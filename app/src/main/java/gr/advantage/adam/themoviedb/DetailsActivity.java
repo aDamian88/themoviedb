@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -164,9 +167,16 @@ public class DetailsActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
-                if (String.valueOf(response.body()).equals("[]")) {
+                String results="";
+                try {
+                    JSONObject responseObject = new JSONObject(response.body().toString());
+                    results = responseObject.getString("results");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (results.isEmpty() || results.equals("[]")) {
                     Log.d("TAG", "onResponse: emptyResponse");
-                    Toast.makeText(DetailsActivity.this, "Not available tailer", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsActivity.this, "Not available trailer", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("TAG", "onResponse: trailer " + String.valueOf(response.body()));
                     trailerHandler.decodingVideoResponse(response.body().toString());
