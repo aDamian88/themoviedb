@@ -13,7 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import gr.advantage.adam.themoviedb.MyAppDatabase;
+import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 
 @Entity(tableName = "Favorites",primaryKeys = {"id","type"})
 public class SearchObject {

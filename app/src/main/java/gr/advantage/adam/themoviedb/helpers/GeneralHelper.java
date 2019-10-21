@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.helpers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 
 public class GeneralHelper {
 

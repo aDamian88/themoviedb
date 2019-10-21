@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.database;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

@@ -21,12 +21,12 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
-import gr.advantage.adam.themoviedb.Api;
-import gr.advantage.adam.themoviedb.BottomMenu;
-import gr.advantage.adam.themoviedb.GeneralHelper;
-import gr.advantage.adam.themoviedb.MyAppDatabase;
+import gr.advantage.adam.themoviedb.api.Api;
+import gr.advantage.adam.themoviedb.helpers.BottomMenu;
+import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
+import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 import gr.advantage.adam.themoviedb.R;
-import gr.advantage.adam.themoviedb.TrailerHandler;
+import gr.advantage.adam.themoviedb.helpers.TrailerHandler;
 import gr.advantage.adam.themoviedb.models.Movie;
 import gr.advantage.adam.themoviedb.models.TvShow;
 import okhttp3.OkHttpClient;

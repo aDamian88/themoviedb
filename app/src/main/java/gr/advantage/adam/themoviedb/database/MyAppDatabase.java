@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.database;
 
 import android.content.Context;
 import androidx.room.Database;
@@ -29,21 +29,4 @@ public abstract class MyAppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-
-
-    public static void destroyInstance() {
-        INSTANCE = null;
-    }
-
-/*    public static MyAppDatabase getAssetDatabase(Context context){
-
-        INSTANCE =   Room.databaseBuilder(context.getApplicationContext(),
-                MyAppDatabase.class,
-                "userdb")
-                .openHelperFactory(new AssetSQLiteOpenHelperFactory())
-                .allowMainThreadQueries()
-                .build();
-
-        return INSTANCE;
-    }*/
 }

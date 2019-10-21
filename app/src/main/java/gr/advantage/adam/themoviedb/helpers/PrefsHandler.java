@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;

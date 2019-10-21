@@ -26,10 +26,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import gr.advantage.adam.themoviedb.Api;
-import gr.advantage.adam.themoviedb.BottomMenu;
-import gr.advantage.adam.themoviedb.GeneralHelper;
-import gr.advantage.adam.themoviedb.MovieListAdapter;
+import gr.advantage.adam.themoviedb.api.Api;
+import gr.advantage.adam.themoviedb.helpers.BottomMenu;
+import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
+import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 import okhttp3.OkHttpClient;

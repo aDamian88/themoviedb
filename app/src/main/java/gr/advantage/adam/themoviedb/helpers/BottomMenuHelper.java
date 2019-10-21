@@ -1,10 +1,11 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.helpers;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.activities.SearchActivity;
 import gr.advantage.adam.themoviedb.activities.WatchListActivity;
 

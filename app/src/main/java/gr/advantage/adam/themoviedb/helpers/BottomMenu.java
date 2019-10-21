@@ -1,11 +1,11 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.helpers;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+
+import gr.advantage.adam.themoviedb.R;
 
 public class BottomMenu {
 

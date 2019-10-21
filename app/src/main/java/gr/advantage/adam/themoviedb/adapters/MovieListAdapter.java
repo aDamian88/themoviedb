@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
+import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.activities.DetailsActivity;
+import gr.advantage.adam.themoviedb.api.Api;
+import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -39,11 +43,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
-        return new gr.advantage.adam.themoviedb.MovieListAdapter.ViewHolder(v);
+        return new MovieListAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull gr.advantage.adam.themoviedb.MovieListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MovieListAdapter.ViewHolder holder, final int position) {
         final SearchObject cardListItem = cardList.get(position);
 
         holder.objectName.setText(cardListItem.getTitle());

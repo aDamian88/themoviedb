@@ -14,8 +14,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import gr.advantage.adam.themoviedb.BottomMenu;
-import gr.advantage.adam.themoviedb.MovieListAdapter;
+import gr.advantage.adam.themoviedb.helpers.BottomMenu;
+import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
