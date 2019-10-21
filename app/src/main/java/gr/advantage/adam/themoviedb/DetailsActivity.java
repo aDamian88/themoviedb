@@ -29,7 +29,6 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView tvSummary;
     private TextView tvGenre;
     private ImageView imPoster;
-    private MyAppDatabase myAppDatabase;
     private CardView cardSave;
     private CardView cardTrailer;
     private Movie movie;

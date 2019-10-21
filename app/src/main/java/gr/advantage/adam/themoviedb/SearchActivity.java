@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -34,6 +35,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private CardView cardSearch;
     private EditText edtSearch;
+    private ImageView imTheMovieDb;
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
     private RecyclerView recyclerView;
     private String search;
@@ -60,12 +62,15 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        imTheMovieDb = findViewById(R.id.iv_the_movie_db);
+
         edtSearch = findViewById(R.id.search);
 
         cardSearch = findViewById(R.id.cardSearch);
         cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                imTheMovieDb.setVisibility(View.GONE);
                 searchObjects.clear();
                 responseIsEmpty =false;
                 pastVisibleItems=0;

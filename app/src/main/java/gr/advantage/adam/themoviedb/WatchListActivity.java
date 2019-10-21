@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -15,6 +18,7 @@ public class WatchListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private final BottomMenu bottomMenu = new BottomMenu(this);
     GeneralHelper generalHelper = new GeneralHelper();
+    ImageView imTheMovieDB;
 
     @Override
     protected void onResume() {
@@ -27,6 +31,7 @@ public class WatchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        imTheMovieDB = findViewById(R.id.iv_the_movie_db);
 
         recyclerView = findViewById(R.id.recycler_movie_list);
         recyclerView.setHasFixedSize(true);
@@ -38,9 +43,11 @@ public class WatchListActivity extends AppCompatActivity {
 
         SearchObject searchObject = new SearchObject();
         searchObjects.addAll(searchObject.getSearchObjectFromDatabase(this));
+        Log.d("tag", "onCreate: watchlist " + String.valueOf(searchObjects));
+        if(searchObjects.size()>0)imTheMovieDB.setVisibility(View.GONE);
         initMovieList();
-        bottomMenu.initBottomMenu(this);
 
+        bottomMenu.initBottomMenu(this);
         generalHelper.deleteTemporaryObjects(this);
     }
 

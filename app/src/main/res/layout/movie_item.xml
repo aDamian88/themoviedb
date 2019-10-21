@@ -35,7 +35,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="3dp"
                 android:layout_weight=".20"
-                app:srcCompat="@drawable/citym" />
+                app:srcCompat="@mipmap/themoviedb" />
 
             <RelativeLayout
                 android:layout_width="0dp"
