@@ -2,14 +2,11 @@ package gr.advantage.adam.themoviedb.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,15 +14,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.JsonObject;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
 import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
@@ -53,6 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private final GeneralHelper generalHelper = new GeneralHelper();
     private final PrefsHandler prefsHandler = new PrefsHandler();
+    RecyclerView.Adapter adapter;
 
     /// Variables for pagination
 
@@ -173,7 +167,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initMovieList() {
-        RecyclerView.Adapter adapter = new MovieListAdapter(searchObjects, this);
+        adapter = new MovieListAdapter(searchObjects, this);
         recyclerView.setAdapter(adapter);
     }
 

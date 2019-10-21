@@ -176,7 +176,7 @@ public class DetailsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (results.isEmpty() || results.equals("[]")) {
-                    Toast.makeText(DetailsActivity.this, "Not available trailer", Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsActivity.this, "Trailer is not available.", Toast.LENGTH_LONG).show();
                 } else {
                     if(response.body()!=null)trailerHandler.decodingVideoResponse(response.body().toString());
                 }
