@@ -30,6 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView tvTitle;
     private TextView tvSummary;
     private TextView tvGenre;
+    private TextView tvSave;
     private ImageView imPoster;
     private CardView cardSave;
     private CardView cardTrailer;
@@ -53,6 +54,7 @@ public class DetailsActivity extends AppCompatActivity {
         tvTitle = findViewById(R.id.tv_title);
         tvSummary = findViewById(R.id.tv_movie_summary);
         tvGenre = findViewById(R.id.tv_movie_right);
+        tvSave = findViewById(R.id.tv_save);
         imPoster = findViewById(R.id.im_movie);
 
         String url;
@@ -74,6 +76,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (!saveInstance) {
             imSave.setBackgroundResource(R.mipmap.favorite);
+            tvSave.setText("Remove");
         }
 
         cardSave.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +86,11 @@ public class DetailsActivity extends AppCompatActivity {
                 if (!saveInstance) {
                     myAppDatabase.MyDao().updateTemporaryStatus(id, type, true);
                     imSave.setBackgroundResource(R.mipmap.favoriteblank);
+                    tvSave.setText("Save");
                 } else {
                     myAppDatabase.MyDao().updateTemporaryStatus(id, type, false);
                     imSave.setBackgroundResource(R.mipmap.favorite);
+                    tvSave.setText("Remove");
 
                 }
             }
