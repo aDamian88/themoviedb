@@ -1,6 +1,7 @@
 package gr.advantage.adam.themoviedb;
 
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
     private boolean saveInstance;
     private final BottomMenu bottomMenu = new BottomMenu(this);
     private final TrailerHandler trailerHandler = new TrailerHandler(this);
+    private final GeneralHelper generalHelper = new GeneralHelper();
 
 
     @Override
@@ -53,12 +56,12 @@ public class DetailsActivity extends AppCompatActivity {
         imPoster = findViewById(R.id.im_movie);
 
         String url;
-        if(type.equals("movie")){
-            url = "movie/"+id+"?api_key="+Api.AUTH_KEY;
-            callToApi(url,type);
-        }else{
-            url = "tv/"+id+"?api_key="+Api.AUTH_KEY;
-            callToApi(url,type);
+        if (type.equals("movie")) {
+            url = "movie/" + id + "?api_key=" + Api.AUTH_KEY;
+            callToApi(url, type);
+        } else {
+            url = "tv/" + id + "?api_key=" + Api.AUTH_KEY;
+            callToApi(url, type);
         }
 
         final MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(this);
@@ -67,34 +70,37 @@ public class DetailsActivity extends AppCompatActivity {
         cardSave = findViewById(R.id.cardSave);
         final ImageView imSave = findViewById(R.id.im_save);
 
-        saveInstance = myAppDatabase.MyDao().getObjectStatus(id,type);
+        saveInstance = myAppDatabase.MyDao().getObjectStatus(id, type);
 
-        if(!saveInstance){
+        if (!saveInstance) {
             imSave.setBackgroundResource(R.mipmap.favorite);
         }
 
         cardSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveInstance = myAppDatabase.MyDao().getObjectStatus(id,type);
-                if(!saveInstance) {
-                    myAppDatabase.MyDao().updateTemporaryStatus(id,type,true);
+                saveInstance = myAppDatabase.MyDao().getObjectStatus(id, type);
+                if (!saveInstance) {
+                    myAppDatabase.MyDao().updateTemporaryStatus(id, type, true);
                     imSave.setBackgroundResource(R.mipmap.favoriteblank);
-                }else{
-                    myAppDatabase.MyDao().updateTemporaryStatus(id,type,false);
+                } else {
+                    myAppDatabase.MyDao().updateTemporaryStatus(id, type, false);
                     imSave.setBackgroundResource(R.mipmap.favorite);
 
                 }
             }
         });
-        /////////////////////////////////////
 
         /////////// Handle trailer /////////
         cardTrailer = findViewById(R.id.cardTrailer);
         cardTrailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callTrailer(id,type);
+                if (!generalHelper.isOnline(DetailsActivity.this)) {
+                    Toast.makeText(DetailsActivity.this, "Needs internet connection", Toast.LENGTH_LONG).show();
+                } else {
+                    callTrailer(id, type);
+                }
             }
         });
 
@@ -105,7 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
         return new OkHttpClient.Builder().connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES).readTimeout(60, TimeUnit.MINUTES).build();
     }
 
-    public void callToApi(final String url,final String type) {
+    public void callToApi(final String url, final String type) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
         Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + url);
@@ -116,10 +122,10 @@ public class DetailsActivity extends AppCompatActivity {
                     Log.d("TAG", "onResponse: emptyResponse");
                 } else {
                     Log.d("TAG", "onResponse: " + String.valueOf(response.body()));
-                    if(type.equals("movie")){
+                    if (type.equals("movie")) {
                         movie = new Movie();
                         displayMovieData(movie.decodingMovie(response.body().toString()));
-                    }else{
+                    } else {
                         tvShow = new TvShow();
                         displayTvShowData(tvShow.decodingTvShow(response.body().toString()));
                     }
@@ -133,29 +139,29 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void displayMovieData(Movie movie){
+    private void displayMovieData(Movie movie) {
         tvTitle.setText(movie.getTitle());
         tvSummary.setText(movie.getSummary());
         tvGenre.setText(movie.getGenre());
-        Glide.with(this).load(Api.POSTER_URL+movie.getImage()).into(imPoster);
+        Glide.with(this).load(Api.POSTER_URL + movie.getImage()).into(imPoster);
     }
 
-    private void displayTvShowData(TvShow tvShow){
+    private void displayTvShowData(TvShow tvShow) {
         tvTitle.setText(tvShow.getTitle());
         tvSummary.setText(tvShow.getSummary());
-        Glide.with(this).load(Api.POSTER_URL+tvShow.getImage()).into(imPoster);
+        Glide.with(this).load(Api.POSTER_URL + tvShow.getImage()).into(imPoster);
     }
 
-    private void callTrailer(Integer id, String type){
+    private void callTrailer(Integer id, String type) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
-        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + type+"/"+id+"/"+"videos?api_key="+Api.AUTH_KEY);
+        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + type + "/" + id + "/" + "videos?api_key=" + Api.AUTH_KEY);
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
                 if (String.valueOf(response.body()).equals("[]")) {
                     Log.d("TAG", "onResponse: emptyResponse");
-                    Toast.makeText(DetailsActivity.this,"Not available tailer",Toast.LENGTH_LONG).show();
+                    Toast.makeText(DetailsActivity.this, "Not available tailer", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d("TAG", "onResponse: trailer " + String.valueOf(response.body()));
                     trailerHandler.decodingVideoResponse(response.body().toString());
@@ -168,7 +174,6 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

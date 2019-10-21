@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -24,6 +25,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private List<SearchObject> cardList;
     private Context context;
+    private GeneralHelper generalHelper = new GeneralHelper();
 
     public MovieListAdapter(List<SearchObject> cardList, Context context) {
         this.cardList = cardList;
@@ -49,13 +51,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveItemTemporary(cardListItem);
-                Integer id = cardListItem.getId();
-                Intent myIntent = new Intent(context, DetailsActivity.class);
-                myIntent.putExtra("id", id);
-                String type = cardListItem.getType();
-                myIntent.putExtra("type", type);
-                context.startActivity(myIntent);
+                if (!generalHelper.isOnline(context)) {
+                    Toast.makeText(context,"Needs internet connection",Toast.LENGTH_LONG).show();
+                }else {
+                    saveItemTemporary(cardListItem);
+                    Integer id = cardListItem.getId();
+                    Intent myIntent = new Intent(context, DetailsActivity.class);
+                    myIntent.putExtra("id", id);
+                    String type = cardListItem.getType();
+                    myIntent.putExtra("type", type);
+                    context.startActivity(myIntent);
+                }
             }
         });
 

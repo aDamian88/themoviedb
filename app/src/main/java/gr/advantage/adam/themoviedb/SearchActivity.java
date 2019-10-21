@@ -42,6 +42,7 @@ public class SearchActivity extends AppCompatActivity {
     private final BottomMenu bottomMenu = new BottomMenu(this);
     private int page =1;
     private LinearLayoutManager layoutManager;
+    private final GeneralHelper generalHelper = new GeneralHelper();
 
     /// Variables for pagination
     private boolean responseIsEmpty =false;
@@ -63,16 +64,20 @@ public class SearchActivity extends AppCompatActivity {
         cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imTheMovieDb.setVisibility(View.GONE);
-                searchObjects.clear();
-                responseIsEmpty =false;
-                pastVisibleItems=0;
-                visibleItemCount=0;
-                totalItemCount=0;
-                previousTotal=0;
-                search = edtSearch.getText().toString();
-                Log.d("TAG", "onClick: search " + String.valueOf(search));
-                makeSearchCall(search);
+                if (!generalHelper.isOnline(SearchActivity.this)) {
+                    Toast.makeText(SearchActivity.this,"Needs internet connection",Toast.LENGTH_LONG).show();
+                }else {
+                    imTheMovieDb.setVisibility(View.GONE);
+                    searchObjects.clear();
+                    responseIsEmpty = false;
+                    pastVisibleItems = 0;
+                    visibleItemCount = 0;
+                    totalItemCount = 0;
+                    previousTotal = 0;
+                    search = edtSearch.getText().toString();
+                    Log.d("TAG", "onClick: search " + String.valueOf(search));
+                    makeSearchCall(search);
+                }
 
             }
         });
