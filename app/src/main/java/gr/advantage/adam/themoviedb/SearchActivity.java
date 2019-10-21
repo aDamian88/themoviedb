@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,15 +42,15 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String search;
     private final BottomMenu bottomMenu = new BottomMenu(this);
-    private int page =1;
+    private int page = 1;
     private LinearLayoutManager layoutManager;
     private final GeneralHelper generalHelper = new GeneralHelper();
 
     /// Variables for pagination
-    private boolean responseIsEmpty =false;
+    private boolean responseIsEmpty = false;
 
     private boolean isLoading = true;
-    private int pastVisibleItems,visibleItemCount,totalItemCount,previousTotal=0;
+    private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
     private int viewThreshold = 10;
 
     @Override
@@ -64,21 +66,19 @@ public class SearchActivity extends AppCompatActivity {
         cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!generalHelper.isOnline(SearchActivity.this)) {
-                    Toast.makeText(SearchActivity.this,"Needs internet connection",Toast.LENGTH_LONG).show();
-                }else {
-                    imTheMovieDb.setVisibility(View.GONE);
-                    searchObjects.clear();
-                    responseIsEmpty = false;
-                    pastVisibleItems = 0;
-                    visibleItemCount = 0;
-                    totalItemCount = 0;
-                    previousTotal = 0;
-                    search = edtSearch.getText().toString();
-                    Log.d("TAG", "onClick: search " + String.valueOf(search));
-                    makeSearchCall(search);
+                performSearch();
+            }
+        });
+        edtSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN)) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        performSearch();
+                        return true;
+                    }
                 }
-
+                return false;
             }
         });
 
@@ -102,20 +102,20 @@ public class SearchActivity extends AppCompatActivity {
                 totalItemCount = layoutManager.getItemCount();
                 pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
 
-                if(dy>0){
-                    if(isLoading){
-                        if(totalItemCount>previousTotal){
-                            isLoading =false;
+                if (dy > 0) {
+                    if (isLoading) {
+                        if (totalItemCount > previousTotal) {
+                            isLoading = false;
                             previousTotal = totalItemCount;
                         }
                     }
                 }
 
-                if(!isLoading&&(totalItemCount-visibleItemCount)<=(pastVisibleItems+viewThreshold) ){
+                if (!isLoading && (totalItemCount - visibleItemCount) <= (pastVisibleItems + viewThreshold)) {
                     isLoading = true;
                     page++;
                     makeSearchCall(search);
-                }else {
+                } else {
                     if (!responseIsEmpty && (totalItemCount - visibleItemCount) == (pastVisibleItems)) {
                         if (!responseIsEmpty) {
                             isLoading = true;
@@ -138,12 +138,12 @@ public class SearchActivity extends AppCompatActivity {
     private void makeSearchCall(final String search) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
-        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/multi?api_key="+Api.AUTH_KEY+"&query="+search+"&page="+page);
+        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/multi?api_key=" + Api.AUTH_KEY + "&query=" + search + "&page=" + page);
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
 
-                String results="";
+                String results = "";
                 try {
                     JSONObject checkResponse = new JSONObject(response.body().toString());
                     results = checkResponse.getString("results");
@@ -153,15 +153,15 @@ public class SearchActivity extends AppCompatActivity {
 
                 if (results.equals("[]") || results.isEmpty()) {
                     Log.d("TAG", "onResponse: emptyResponse");
-                    Toast.makeText(SearchActivity.this,"Empty response from API",Toast.LENGTH_LONG).show();
-                    responseIsEmpty=true;
+                    Toast.makeText(SearchActivity.this, "Empty response from API", Toast.LENGTH_LONG).show();
+                    responseIsEmpty = true;
                     page = 1;
                 } else {
                     Log.d("TAG", "onResponse: successful response " + String.valueOf(response.body()));
                     SearchObject searchObject = new SearchObject();
                     searchObjects.addAll(searchObject.getSearchObjectFromResponse(String.valueOf(response.body())));
                     initMovieList();
-                    Toast.makeText(SearchActivity.this,"Page: "+page,Toast.LENGTH_LONG).show();
+                    Toast.makeText(SearchActivity.this, "Page: " + page, Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -177,4 +177,21 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    private void performSearch() {
+        if (!generalHelper.isOnline(SearchActivity.this)) {
+            Toast.makeText(SearchActivity.this, "Needs internet connection", Toast.LENGTH_LONG).show();
+        } else {
+            imTheMovieDb.setVisibility(View.GONE);
+            searchObjects.clear();
+            responseIsEmpty = false;
+            pastVisibleItems = 0;
+            visibleItemCount = 0;
+            totalItemCount = 0;
+            previousTotal = 0;
+            search = edtSearch.getText().toString();
+            Log.d("TAG", "onClick: search " + String.valueOf(search));
+            makeSearchCall(search);
+            generalHelper.hideKeyboard(this);
+        }
+    }
 }
