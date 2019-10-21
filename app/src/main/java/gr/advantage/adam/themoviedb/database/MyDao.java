@@ -4,15 +4,13 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-
 import java.util.List;
-
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
 @Dao
 public interface MyDao {
 
-    // search Model
+    // Search Model
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addSearchObject(SearchObject searchObject);
 

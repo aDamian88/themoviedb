@@ -6,17 +6,17 @@ import org.json.JSONObject;
 
 public class TvShow {
 
-    Integer id;
-    String image;
-    String title;
-    String summary;
-    String genre;
+    private Integer id;
+    private String image;
+    private String title;
+    private String summary;
+    private String genre;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 
@@ -24,7 +24,7 @@ public class TvShow {
         return image;
     }
 
-    public void setImage(String image) {
+    private void setImage(String image) {
         this.image = image;
     }
 
@@ -32,7 +32,7 @@ public class TvShow {
         return title;
     }
 
-    public void setTitle(String title) {
+    private void setTitle(String title) {
         this.title = title;
     }
 
@@ -41,7 +41,7 @@ public class TvShow {
         return summary;
     }
 
-    public void setSummary(String summary) {
+    private void setSummary(String summary) {
         this.summary = summary;
     }
 
@@ -49,7 +49,7 @@ public class TvShow {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    private void setGenre(String genre) {
         this.genre = genre;
     }
 

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-
 import java.util.List;
-
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
 import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.activities.DetailsActivity;
@@ -25,14 +20,12 @@ import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
-    private List<SearchObject> cardList;
-    private Context context;
-    private GeneralHelper generalHelper = new GeneralHelper();
+    private final List<SearchObject> cardList;
+    private final Context context;
+    private final GeneralHelper generalHelper = new GeneralHelper();
 
     public MovieListAdapter(List<SearchObject> cardList, Context context) {
         this.cardList = cardList;
@@ -81,11 +74,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView objectName, releaseDate, ratings;
-        public LinearLayout linearLayout;
-        public ImageView poster;
+        final TextView objectName;
+        final TextView releaseDate;
+        final TextView ratings;
+        final LinearLayout linearLayout;
+        final ImageView poster;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             poster = itemView.findViewById(R.id.im_movie);
@@ -99,12 +94,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     private void saveItemTemporary(SearchObject searchObject){
         MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabase(context);
-        Log.d(TAG, "saveItemTemporary: "+ searchObject.getTitle()+" " + String.valueOf(myAppDatabase.MyDao().checkIfObjectIsStored(searchObject.getId(),searchObject.getType(),false)));
         if(myAppDatabase.MyDao().checkIfObjectIsStored(searchObject.getId(),searchObject.getType(),false)==0) {
             searchObject.setTemporary(true);
             searchObject.saveSearchObject(context);
         }
     }
-
-
 }

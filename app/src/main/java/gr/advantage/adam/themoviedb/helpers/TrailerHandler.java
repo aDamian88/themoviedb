@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TrailerHandler {
-    Activity activity;
+    private final Activity activity;
 
     public TrailerHandler(Activity activity) {
         this.activity = activity;

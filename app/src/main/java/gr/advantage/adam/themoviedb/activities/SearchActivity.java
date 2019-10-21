@@ -31,6 +31,7 @@ import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
 import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
+import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -51,6 +52,7 @@ public class SearchActivity extends AppCompatActivity {
     private int page = 1;
     private LinearLayoutManager layoutManager;
     private final GeneralHelper generalHelper = new GeneralHelper();
+    private final PrefsHandler prefsHandler = new PrefsHandler();
 
     /// Variables for pagination
 
@@ -126,7 +128,8 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        bottomMenu.initBottomMenu(this);
+        prefsHandler.putScreenToPrefs(this, "Search","lastScreen");
+        bottomMenu.initBottomMenu();
 
     }
 

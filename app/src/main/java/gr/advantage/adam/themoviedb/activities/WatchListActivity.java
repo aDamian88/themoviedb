@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
+import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
 public class WatchListActivity extends AppCompatActivity {
@@ -20,6 +21,8 @@ public class WatchListActivity extends AppCompatActivity {
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
     private RecyclerView recyclerView;
     private final BottomMenu bottomMenu = new BottomMenu(this);
+    private final PrefsHandler prefsHandler = new PrefsHandler();
+
 
 
     @Override
@@ -43,7 +46,8 @@ public class WatchListActivity extends AppCompatActivity {
         if(searchObjects.size()>0) imTheMovieDB.setVisibility(View.GONE);
         initMovieList();
 
-        bottomMenu.initBottomMenu(this);
+        prefsHandler.putScreenToPrefs(this, "Watchlist","lastScreen");
+        bottomMenu.initBottomMenu();
     }
 
     private void initMovieList() {

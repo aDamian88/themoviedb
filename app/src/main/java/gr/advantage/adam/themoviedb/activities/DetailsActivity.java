@@ -20,6 +20,7 @@ import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
 import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 import gr.advantage.adam.themoviedb.R;
+import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.helpers.TrailerHandler;
 import gr.advantage.adam.themoviedb.models.Movie;
 import gr.advantage.adam.themoviedb.models.TvShow;
@@ -109,7 +110,7 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        bottomMenu.initBottomMenu(this);
+        bottomMenu.initBottomMenu();
     }
 
     private static OkHttpClient okClient() {

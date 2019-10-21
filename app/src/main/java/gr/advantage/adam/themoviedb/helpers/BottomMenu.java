@@ -1,7 +1,6 @@
 package gr.advantage.adam.themoviedb.helpers;
 
 import android.app.Activity;
-import android.content.Context;
 
 import androidx.cardview.widget.CardView;
 
@@ -9,17 +8,14 @@ import gr.advantage.adam.themoviedb.R;
 
 public class BottomMenu {
 
-    protected PrefsHandler prefsHandler = new PrefsHandler();
-    protected Context context;
-    protected final Activity activity;
+    private final Activity activity;
 
     public BottomMenu(Activity activity) {
         this.activity = activity;
     }
 
-    public void initBottomMenu(final Context context) {
+    public void initBottomMenu() {
 
-        this.context = context;
         CardView cardHome, cardWatchlist, cardAbout;
 
         cardHome = this.activity.findViewById(R.id.cardHome);
