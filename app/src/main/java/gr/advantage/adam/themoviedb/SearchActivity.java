@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import gr.advantage.adam.themoviedb.models.SearchObject;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;

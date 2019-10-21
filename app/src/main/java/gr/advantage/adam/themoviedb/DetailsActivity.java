@@ -21,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import gr.advantage.adam.themoviedb.models.Movie;
+import gr.advantage.adam.themoviedb.models.TvShow;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,10 +1,11 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TvShow {
+
+public class Movie {
 
     Integer id;
     String image;
@@ -36,7 +37,6 @@ public class TvShow {
         this.title = title;
     }
 
-
     public String getSummary() {
         return summary;
     }
@@ -53,20 +53,20 @@ public class TvShow {
         this.genre = genre;
     }
 
-    public TvShow decodingTvShow(String response){
-        TvShow tvShow = new TvShow();
+    public Movie decodingMovie(String response){
+        Movie movie = new Movie();
         try {
             JSONObject jsonResponse = new JSONObject(response);
-            tvShow.setId(jsonResponse.getInt("id"));
-            tvShow.setImage(jsonResponse.getString("poster_path"));
-            tvShow.setTitle(jsonResponse.getString("original_name"));
-            tvShow.setSummary(jsonResponse.getString("overview"));
+            movie.setId(jsonResponse.getInt("id"));
+            movie.setImage(jsonResponse.getString("poster_path"));
+            movie.setTitle(jsonResponse.getString("title"));
+            movie.setSummary(jsonResponse.getString("overview"));
             String genre = getFirstGenre(jsonResponse.getString("genres"));
-            tvShow.setGenre(genre);
+            movie.setGenre(genre);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return tvShow;
+        return movie;
     }
 
     private String getFirstGenre(String genreList){
@@ -80,5 +80,4 @@ public class TvShow {
         }
         return genre;
     }
-
 }

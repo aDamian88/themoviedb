@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import gr.advantage.adam.themoviedb.models.SearchObject;
+
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 

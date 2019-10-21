@@ -11,9 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+
+import gr.advantage.adam.themoviedb.models.SearchObject;
 
 public class WatchListActivity extends AppCompatActivity {
 

@@ -7,6 +7,8 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import gr.advantage.adam.themoviedb.models.SearchObject;
+
 @Dao
 public interface MyDao {
 

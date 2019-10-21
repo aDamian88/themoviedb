@@ -39,7 +39,6 @@ class BottomMenuHelper implements View.OnClickListener {
             case R.id.cardAbout:
                 DialogHandler dialogHandler = new DialogHandler();
                 dialogHandler.createAlertDialog(context,context.getResources().getString(R.string.about),context.getResources().getString(R.string.about_message),"OK","",null);
-                Toast.makeText(context, "About Dialog", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

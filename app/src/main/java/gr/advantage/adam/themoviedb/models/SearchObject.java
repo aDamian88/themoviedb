@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.models;
 
 import android.content.Context;
 
@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import gr.advantage.adam.themoviedb.MyAppDatabase;
 
 @Entity(tableName = "Favorites",primaryKeys = {"id","type"})
 public class SearchObject {

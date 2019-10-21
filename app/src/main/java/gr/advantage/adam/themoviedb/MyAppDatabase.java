@@ -5,7 +5,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-
+import gr.advantage.adam.themoviedb.models.SearchObject;
 
 
 @Database(entities = SearchObject.class, exportSchema = false, version = 1)
