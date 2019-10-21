@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+import gr.advantage.adam.themoviedb.BottomMenu;
+import gr.advantage.adam.themoviedb.MovieListAdapter;
+import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
 public class WatchListActivity extends AppCompatActivity {

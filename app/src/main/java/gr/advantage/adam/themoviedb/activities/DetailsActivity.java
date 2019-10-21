@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.activities;
 
 import android.content.Intent;
 
@@ -21,6 +21,12 @@ import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
+import gr.advantage.adam.themoviedb.Api;
+import gr.advantage.adam.themoviedb.BottomMenu;
+import gr.advantage.adam.themoviedb.GeneralHelper;
+import gr.advantage.adam.themoviedb.MyAppDatabase;
+import gr.advantage.adam.themoviedb.R;
+import gr.advantage.adam.themoviedb.TrailerHandler;
 import gr.advantage.adam.themoviedb.models.Movie;
 import gr.advantage.adam.themoviedb.models.TvShow;
 import okhttp3.OkHttpClient;

@@ -4,7 +4,9 @@ package gr.advantage.adam.themoviedb;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
+
+import gr.advantage.adam.themoviedb.activities.SearchActivity;
+import gr.advantage.adam.themoviedb.activities.WatchListActivity;
 
 
 class BottomMenuHelper implements View.OnClickListener {

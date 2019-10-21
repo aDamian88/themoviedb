@@ -15,13 +15,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".WatchListActivity"
+            android:name=".activities.WatchListActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".DetailsActivity"
+            android:name=".activities.DetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".activities.SearchActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

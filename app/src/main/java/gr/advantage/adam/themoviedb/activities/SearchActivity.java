@@ -1,4 +1,4 @@
-package gr.advantage.adam.themoviedb;
+package gr.advantage.adam.themoviedb.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +26,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import gr.advantage.adam.themoviedb.Api;
+import gr.advantage.adam.themoviedb.BottomMenu;
+import gr.advantage.adam.themoviedb.GeneralHelper;
+import gr.advantage.adam.themoviedb.MovieListAdapter;
+import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
