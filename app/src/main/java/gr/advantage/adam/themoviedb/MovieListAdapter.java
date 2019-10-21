@@ -59,8 +59,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             }
         });
 
-//        notifyDataSetChanged(); /////////////////////////////////////////////////////////////////
-
     }
 
     @Override

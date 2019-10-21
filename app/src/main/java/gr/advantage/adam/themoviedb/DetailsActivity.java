@@ -50,6 +50,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         tvTitle = findViewById(R.id.tv_title);
         tvSummary = findViewById(R.id.tv_movie_summary);
+        tvGenre = findViewById(R.id.tv_movie_right);
         imPoster = findViewById(R.id.im_movie);
 
         String url;
@@ -136,6 +137,7 @@ public class DetailsActivity extends AppCompatActivity {
     private void displayMovieData(Movie movie){
         tvTitle.setText(movie.getTitle());
         tvSummary.setText(movie.getSummary());
+        tvGenre.setText(movie.getGenre());
         Glide.with(this).load(Api.POSTER_URL+movie.getImage()).into(imPoster);
     }
 

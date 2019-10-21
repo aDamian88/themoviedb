@@ -1,6 +1,8 @@
 package gr.advantage.adam.themoviedb;
 
 import android.util.Log;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,6 +13,7 @@ public class Movie {
     String image;
     String title;
     String summary;
+    String genre;
 
     public Integer getId() {
         return id;
@@ -36,13 +39,20 @@ public class Movie {
         this.title = title;
     }
 
-
     public String getSummary() {
         return summary;
     }
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public Movie decodingMovie(String response){
@@ -53,12 +63,23 @@ public class Movie {
             movie.setImage(jsonResponse.getString("poster_path"));
             movie.setTitle(jsonResponse.getString("title"));
             movie.setSummary(jsonResponse.getString("overview"));
-            Log.d("TAG", "decodingMovie: genres " + jsonResponse.getString("genres"));
-            //decode genre only first
-            Log.d("TAG", "decodingMovie: video " + jsonResponse.getString("video"));
+            String genre = getFirstGenre(jsonResponse.getString("genres"));
+            movie.setGenre(genre);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return movie;
+    }
+
+    private String getFirstGenre(String genreList){
+        String genre="";
+        try {
+            JSONArray genreArray = new JSONArray(genreList);
+            JSONObject genreObject = genreArray.getJSONObject(0);
+            genre = genreObject.getString("name");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return genre;
     }
 }

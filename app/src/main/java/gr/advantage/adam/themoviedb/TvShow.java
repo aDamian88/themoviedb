@@ -1,5 +1,6 @@
 package gr.advantage.adam.themoviedb;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +10,7 @@ public class TvShow {
     String image;
     String title;
     String summary;
+    String genre;
 
     public Integer getId() {
         return id;
@@ -43,6 +45,14 @@ public class TvShow {
         this.summary = summary;
     }
 
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
     public TvShow decodingTvShow(String response){
         TvShow tvShow = new TvShow();
         try {
@@ -51,10 +61,24 @@ public class TvShow {
             tvShow.setImage(jsonResponse.getString("poster_path"));
             tvShow.setTitle(jsonResponse.getString("original_name"));
             tvShow.setSummary(jsonResponse.getString("overview"));
+            String genre = getFirstGenre(jsonResponse.getString("genres"));
+            tvShow.setGenre(genre);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return tvShow;
+    }
+
+    private String getFirstGenre(String genreList){
+        String genre="";
+        try {
+            JSONArray genreArray = new JSONArray(genreList);
+            JSONObject genreObject = genreArray.getJSONObject(0);
+            genre = genreObject.getString("name");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return genre;
     }
 
 }

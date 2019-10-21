@@ -147,7 +147,6 @@
                 android:orientation="horizontal"
                 android:paddingBottom="8dp">
 
-
                 <ImageView
                     android:id="@+id/im_movie"
                     android:layout_width="0dp"
@@ -175,7 +174,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
-                        android:text="test"
+                        android:text=" "
                         android:textColor="#01d277"
                         android:textSize="18dp"
                         android:textStyle="bold" />
@@ -190,7 +189,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="0dp"
                         android:layout_marginRight="0dp"
-                        android:text="test"
+                        android:text=" "
                         android:textColor="#ffff"
                         android:textSize="18dp"
                         android:textStyle="bold" />
