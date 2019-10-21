@@ -1,26 +1,20 @@
 package gr.advantage.adam.themoviedb.activities;
 
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.concurrent.TimeUnit;
-
 import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
@@ -43,8 +37,6 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView tvGenre;
     private TextView tvSave;
     private ImageView imPoster;
-    private CardView cardSave;
-    private CardView cardTrailer;
     private Movie movie;
     private TvShow tvShow;
     private boolean saveInstance;
@@ -80,16 +72,13 @@ public class DetailsActivity extends AppCompatActivity {
         final MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(this);
 
         //// Handle save ///////////
-        cardSave = findViewById(R.id.cardSave);
+        CardView cardSave = findViewById(R.id.cardSave);
         final ImageView imSave = findViewById(R.id.im_save);
-
         saveInstance = myAppDatabase.MyDao().getObjectStatus(id, type);
-
         if (!saveInstance) {
             imSave.setBackgroundResource(R.mipmap.favorite);
-            tvSave.setText("Remove");
+            tvSave.setText(getResources().getString(R.string.remove));
         }
-
         cardSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,18 +86,18 @@ public class DetailsActivity extends AppCompatActivity {
                 if (!saveInstance) {
                     myAppDatabase.MyDao().updateTemporaryStatus(id, type, true);
                     imSave.setBackgroundResource(R.mipmap.favoriteblank);
-                    tvSave.setText("Save");
+                    tvSave.setText(getResources().getString(R.string.save));
                 } else {
                     myAppDatabase.MyDao().updateTemporaryStatus(id, type, false);
                     imSave.setBackgroundResource(R.mipmap.favorite);
-                    tvSave.setText("Remove");
+                    tvSave.setText(getResources().getString(R.string.remove));
 
                 }
             }
         });
 
         /////////// Handle trailer /////////
-        cardTrailer = findViewById(R.id.cardTrailer);
+        CardView cardTrailer = findViewById(R.id.cardTrailer);
         cardTrailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +116,7 @@ public class DetailsActivity extends AppCompatActivity {
         return new OkHttpClient.Builder().connectTimeout(60, TimeUnit.MINUTES).writeTimeout(60, TimeUnit.MINUTES).readTimeout(60, TimeUnit.MINUTES).build();
     }
 
-    public void callToApi(final String url, final String type) {
+    private void callToApi(final String url, final String type) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
         Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + url);
@@ -135,22 +124,23 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
                 if (String.valueOf(response.body()).equals("[]")) {
-                    Log.d("TAG", "onResponse: emptyResponse");
+                    Log.d("response", "onResponse: emptyResponse");
                 } else {
-                    Log.d("TAG", "onResponse: " + String.valueOf(response.body()));
                     if (type.equals("movie")) {
                         movie = new Movie();
-                        displayMovieData(movie.decodingMovie(response.body().toString()));
+                        if (response.body() != null)
+                            displayMovieData(movie.decodingMovie(response.body().toString()));
                     } else {
                         tvShow = new TvShow();
-                        displayTvShowData(tvShow.decodingTvShow(response.body().toString()));
+                        if (response.body() != null)
+                            displayTvShowData(tvShow.decodingTvShow(response.body().toString()));
                     }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
-                Log.e("TAG", "search response onFailure: " + t.toString());
+                Log.e("error", "search response onFailure: " + t.toString());
             }
         });
     }
@@ -175,25 +165,25 @@ public class DetailsActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
-                String results="";
+                String results = "";
                 try {
-                    JSONObject responseObject = new JSONObject(response.body().toString());
-                    results = responseObject.getString("results");
+                    if (response.body() != null) {
+                        JSONObject responseObject = new JSONObject(response.body().toString());
+                        results = responseObject.getString("results");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 if (results.isEmpty() || results.equals("[]")) {
-                    Log.d("TAG", "onResponse: emptyResponse");
                     Toast.makeText(DetailsActivity.this, "Not available trailer", Toast.LENGTH_LONG).show();
                 } else {
-                    Log.d("TAG", "onResponse: trailer " + String.valueOf(response.body()));
-                    trailerHandler.decodingVideoResponse(response.body().toString());
+                    if(response.body()!=null)trailerHandler.decodingVideoResponse(response.body().toString());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
-                Log.e("TAG", "search response onFailure: " + t.toString());
+                Log.e("error", "search response onFailure: " + t.toString());
             }
         });
     }

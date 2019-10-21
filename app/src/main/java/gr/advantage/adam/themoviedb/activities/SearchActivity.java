@@ -42,7 +42,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private CardView cardSearch;
     private EditText edtSearch;
     private ImageView imTheMovieDb;
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
@@ -54,11 +53,10 @@ public class SearchActivity extends AppCompatActivity {
     private final GeneralHelper generalHelper = new GeneralHelper();
 
     /// Variables for pagination
-    private boolean responseIsEmpty = false;
 
     private boolean isLoading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
-    private int viewThreshold = 10;
+    private final int viewThreshold = 10;
 
 
     @Override
@@ -71,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         watchlistTitle.setVisibility(View.GONE);
 
         edtSearch = findViewById(R.id.search);
-        cardSearch = findViewById(R.id.cardSearch);
+        CardView cardSearch = findViewById(R.id.cardSearch);
 
         cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,21 +122,7 @@ public class SearchActivity extends AppCompatActivity {
                     isLoading = true;
                     page++;
                     makeSearchCall(search);
-                }/*else {
-                    if (!responseIsEmpty && (totalItemCount - visibleItemCount) == (pastVisibleItems)) {
-                        if (!responseIsEmpty) {
-                            isLoading = true;
-                            page++;
-                            makeSearchCall(search);
-                        }
-                    }
                 }
-
-                // Get the pages until you get empty response
-                if (!responseIsEmpty) {
-                    page++;
-                    makeSearchCall(search);
-                }*/
             }
         });
 
@@ -169,11 +153,8 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 if (results.equals("[]") || results.isEmpty()) {
-                    Log.d("TAG", "onResponse: emptyResponse");
                     Toast.makeText(SearchActivity.this, "Empty response from API", Toast.LENGTH_LONG).show();
-                    responseIsEmpty = true;
                 } else {
-                    Log.d("TAG", "onResponse: successful response " + String.valueOf(response.body()));
                     SearchObject searchObject = new SearchObject();
                     searchObjects.addAll(searchObject.getSearchObjectFromResponse(String.valueOf(response.body())));
                     initMovieList();
@@ -183,7 +164,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
-                Log.e("TAG", "CL service response onFailure: " + t.toString());
+                Log.e("error", "CL service response onFailure: " + t.toString());
             }
         });
     }
@@ -200,10 +181,9 @@ public class SearchActivity extends AppCompatActivity {
             page = 1;
             imTheMovieDb.setVisibility(View.GONE);
             if (searchObjects.size() > 0) searchObjects.clear();
-            responseIsEmpty = false;
             search = edtSearch.getText().toString();
             makeSearchCall(search);
-            generalHelper.hideKeyboard(this);
+            GeneralHelper.hideKeyboard(this);
         }
     }
 }

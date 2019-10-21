@@ -2,6 +2,7 @@
     <string name="app_name">TheMovieDB</string>
     <string name="search">Search</string>
     <string name="save">Save</string>
+    <string name="remove">Remove</string>
     <string name="home">Home</string>
     <string name="watchlist">Watchlist</string>
     <string name="about">About</string>

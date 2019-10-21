@@ -5,15 +5,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import java.util.ArrayList;
-
 import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
@@ -24,7 +20,6 @@ public class WatchListActivity extends AppCompatActivity {
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
     private RecyclerView recyclerView;
     private final BottomMenu bottomMenu = new BottomMenu(this);
-    ImageView imTheMovieDB;
 
 
     @Override
@@ -32,7 +27,7 @@ public class WatchListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        imTheMovieDB = findViewById(R.id.iv_the_movie_db);
+        ImageView imTheMovieDB = findViewById(R.id.iv_the_movie_db);
         fitToolbarComponents();
 
         recyclerView = findViewById(R.id.recycler_movie_list);
@@ -45,8 +40,7 @@ public class WatchListActivity extends AppCompatActivity {
 
         SearchObject searchObject = new SearchObject();
         searchObjects.addAll(searchObject.getSearchObjectFromDatabase(this));
-        Log.d("tag", "onCreate: watchlist " + String.valueOf(searchObjects));
-        if(searchObjects.size()>0)imTheMovieDB.setVisibility(View.GONE);
+        if(searchObjects.size()>0) imTheMovieDB.setVisibility(View.GONE);
         initMovieList();
 
         bottomMenu.initBottomMenu(this);
