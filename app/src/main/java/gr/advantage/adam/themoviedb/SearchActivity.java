@@ -15,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -53,19 +55,23 @@ public class SearchActivity extends AppCompatActivity {
     private int pastVisibleItems, visibleItemCount, totalItemCount, previousTotal = 0;
     private int viewThreshold = 10;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         imTheMovieDb = findViewById(R.id.iv_the_movie_db);
+        TextView watchlistTitle = findViewById(R.id.tv_title);
+        watchlistTitle.setVisibility(View.GONE);
 
         edtSearch = findViewById(R.id.search);
-
         cardSearch = findViewById(R.id.cardSearch);
+
         cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("TAG", "onClick: clickSearch");
                 performSearch();
             }
         });
@@ -87,8 +93,7 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.isClickable();
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.stopScroll();
+        recyclerView.stopScroll();
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setFocusable(true);
 
@@ -96,7 +101,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
 
                 visibleItemCount = layoutManager.getChildCount();
                 totalItemCount = layoutManager.getItemCount();
@@ -115,7 +119,7 @@ public class SearchActivity extends AppCompatActivity {
                     isLoading = true;
                     page++;
                     makeSearchCall(search);
-                } else {
+                }/*else {
                     if (!responseIsEmpty && (totalItemCount - visibleItemCount) == (pastVisibleItems)) {
                         if (!responseIsEmpty) {
                             isLoading = true;
@@ -124,6 +128,12 @@ public class SearchActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                // Get the pages until you get empty response
+                if (!responseIsEmpty) {
+                    page++;
+                    makeSearchCall(search);
+                }*/
             }
         });
 
@@ -145,8 +155,10 @@ public class SearchActivity extends AppCompatActivity {
 
                 String results = "";
                 try {
-                    JSONObject checkResponse = new JSONObject(response.body().toString());
-                    results = checkResponse.getString("results");
+                    if (response.body() != null) {
+                        JSONObject checkResponse = new JSONObject(response.body().toString());
+                        results = checkResponse.getString("results");
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -155,7 +167,6 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d("TAG", "onResponse: emptyResponse");
                     Toast.makeText(SearchActivity.this, "Empty response from API", Toast.LENGTH_LONG).show();
                     responseIsEmpty = true;
-                    page = 1;
                 } else {
                     Log.d("TAG", "onResponse: successful response " + String.valueOf(response.body()));
                     SearchObject searchObject = new SearchObject();
@@ -181,15 +192,11 @@ public class SearchActivity extends AppCompatActivity {
         if (!generalHelper.isOnline(SearchActivity.this)) {
             Toast.makeText(SearchActivity.this, "Needs internet connection", Toast.LENGTH_LONG).show();
         } else {
+            page = 1;
             imTheMovieDb.setVisibility(View.GONE);
-            searchObjects.clear();
+            if (searchObjects.size() > 0) searchObjects.clear();
             responseIsEmpty = false;
-            pastVisibleItems = 0;
-            visibleItemCount = 0;
-            totalItemCount = 0;
-            previousTotal = 0;
             search = edtSearch.getText().toString();
-            Log.d("TAG", "onClick: search " + String.valueOf(search));
             makeSearchCall(search);
             generalHelper.hideKeyboard(this);
         }

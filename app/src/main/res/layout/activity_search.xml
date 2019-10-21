@@ -37,10 +37,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="?attr/colorPrimaryDark"
-                    android:textColorHighlight="@color/colorAccent"
                     android:hint="@string/search"
                     android:singleLine="true"
                     android:textColor="?attr/colorPrimaryDark"
+                    android:textColorHighlight="@color/colorAccent"
                     android:textColorHint="?attr/colorPrimaryDark"
                     android:textColorLink="?attr/colorPrimaryDark"
                     android:textSize="20dp"
@@ -70,32 +70,38 @@
                     app:srcCompat="@mipmap/search" />
 
             </androidx.cardview.widget.CardView>
-
-
-
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/watchlist"
+                android:gravity="center"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:shadowColor="?attr/colorAccent"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:typeface="sans"/>
         </LinearLayout>
 
 
     </LinearLayout>
 
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_movie_list"
         android:layout_width="250dp"
-        android:layout_height="350dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="10dp"
         android:foregroundGravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
