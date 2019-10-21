@@ -2,6 +2,7 @@ package gr.advantage.adam.themoviedb;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -14,6 +15,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +39,15 @@ public class SearchActivity extends AppCompatActivity {
     private String search;
     private final BottomMenu bottomMenu = new BottomMenu(this);
     private final GeneralHelper generalHelper = new GeneralHelper();
+    private int page =1;
+    private LinearLayoutManager layoutManager;
+
+    /// Variables for pagination
+    private boolean responseIsEmpty =false;
+
+    private boolean isLoading = true;
+    private int pastVisibleItems,visibleItemCount,totalItemCount,previousTotal=0;
+    private int viewThreshold = 10;
 
     @Override
     protected void onResume() {
@@ -53,6 +66,12 @@ public class SearchActivity extends AppCompatActivity {
         cardSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                searchObjects.clear();
+                responseIsEmpty =false;
+                pastVisibleItems=0;
+                visibleItemCount=0;
+                totalItemCount=0;
+                previousTotal=0;
                 search = edtSearch.getText().toString();
                 Log.d("TAG", "onClick: search " + String.valueOf(search));
                 makeSearchCall(search);
@@ -63,10 +82,47 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_movie_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.isClickable();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.stopScroll();
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.stopScroll();
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setFocusable(false);
+        recyclerView.setFocusable(true);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+
+                visibleItemCount = layoutManager.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                if(dy>0){
+                    if(isLoading){
+                        if(totalItemCount>previousTotal){
+                            isLoading =false;
+                            previousTotal = totalItemCount;
+                        }
+                    }
+                }
+
+                if(!isLoading&&(totalItemCount-visibleItemCount)<=(pastVisibleItems+viewThreshold) ){
+                    isLoading = true;
+                    page++;
+                    makeSearchCall(search);
+                }else {
+                    if (!responseIsEmpty && (totalItemCount - visibleItemCount) == (pastVisibleItems)) {
+                        if (!responseIsEmpty) {
+                            isLoading = true;
+                            page++;
+                            makeSearchCall(search);
+                        }
+                    }
+                }
+            }
+        });
 
         generalHelper.deleteTemporaryObjects(this);
         bottomMenu.initBottomMenu(this);
@@ -80,20 +136,30 @@ public class SearchActivity extends AppCompatActivity {
     private void makeSearchCall(final String search) {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Api.BASE_URL).client(okClient()).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
-        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/multi?api_key="+Api.AUTH_KEY+"&query="+search+"&page=1");
-        Log.d("TAG", "makeSearchCall: " + String.valueOf(call.request()));
+        Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/multi?api_key="+Api.AUTH_KEY+"&query="+search+"&page="+page);
         call.enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) {
 
-                if (String.valueOf(response.body()).equals("[]")) {
+                String results="";
+                try {
+                    JSONObject checkResponse = new JSONObject(response.body().toString());
+                    results = checkResponse.getString("results");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (results.equals("[]") || results.isEmpty()) {
                     Log.d("TAG", "onResponse: emptyResponse");
-                    Toast.makeText(SearchActivity.this,"No results",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SearchActivity.this,"Empty response from API",Toast.LENGTH_LONG).show();
+                    responseIsEmpty=true;
+                    page = 1;
                 } else {
                     Log.d("TAG", "onResponse: successful response " + String.valueOf(response.body()));
                     SearchObject searchObject = new SearchObject();
                     searchObjects.addAll(searchObject.getSearchObjectFromResponse(String.valueOf(response.body())));
                     initMovieList();
+                    Toast.makeText(SearchActivity.this,"Page: "+page,Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -103,7 +169,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void initMovieList() {
         RecyclerView.Adapter adapter = new MovieListAdapter(searchObjects, this);
