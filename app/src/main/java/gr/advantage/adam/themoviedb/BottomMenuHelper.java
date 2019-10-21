@@ -11,6 +11,7 @@ class BottomMenuHelper implements View.OnClickListener {
 
     private final Context context;
     private final PrefsHandler prefsHandler = new PrefsHandler();
+    private final GeneralHelper generalHelper = new GeneralHelper();
 
     public BottomMenuHelper(Context context) {
         this.context = context;
@@ -23,12 +24,14 @@ class BottomMenuHelper implements View.OnClickListener {
         switch (bottomClick.getId()) {
             case R.id.cardHome:
                 if (!currentScreen.equals("Search")) {
+                    generalHelper.deleteTemporaryObjects(context);
                     Intent mainIntent = new Intent(context, SearchActivity.class);
                     context.startActivity(mainIntent);
                 }
                 break;
             case R.id.cardWatchlist:
                 if (!currentScreen.equals("Watchlist")) {
+                    generalHelper.deleteTemporaryObjects(context);
                     Intent cityIntent = new Intent(context, WatchListActivity.class);
                     context.startActivity(cityIntent);
                 }

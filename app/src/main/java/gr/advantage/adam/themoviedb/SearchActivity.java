@@ -40,7 +40,6 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String search;
     private final BottomMenu bottomMenu = new BottomMenu(this);
-    private final GeneralHelper generalHelper = new GeneralHelper();
     private int page =1;
     private LinearLayoutManager layoutManager;
 
@@ -50,12 +49,6 @@ public class SearchActivity extends AppCompatActivity {
     private boolean isLoading = true;
     private int pastVisibleItems,visibleItemCount,totalItemCount,previousTotal=0;
     private int viewThreshold = 10;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        generalHelper.deleteTemporaryObjects(this);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +122,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        generalHelper.deleteTemporaryObjects(this);
         bottomMenu.initBottomMenu(this);
 
     }
