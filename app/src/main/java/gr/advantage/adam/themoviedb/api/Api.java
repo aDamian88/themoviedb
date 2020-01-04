@@ -2,8 +2,15 @@ package gr.advantage.adam.themoviedb.api;
 
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
+import gr.advantage.adam.themoviedb.models.SearchObject;
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface Api {
@@ -14,4 +21,11 @@ public interface Api {
 
     @GET
     Call<JsonObject> getSearchResult(@Url String url);
+
+    @GET
+    Call<List<SearchObject>> getSearchResultObject(@Url String url);
+
+
+    @GET("search/multi"+Api.AUTH_KEY)
+    Call<List<SearchObject>> getSearchResults(@Field("query") String search);
 }

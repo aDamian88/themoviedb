@@ -26,6 +26,7 @@ import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.models.SearchObject;
+import gr.advantage.adam.themoviedb.repositories.SearchObjectRepository;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -180,6 +181,8 @@ public class SearchActivity extends AppCompatActivity {
             if (searchObjects.size() > 0) searchObjects.clear();
             search = edtSearch.getText().toString();
             makeSearchCall(search);
+            SearchObjectRepository searchRepository =  SearchObjectRepository.getInstance();
+            searchRepository.getSearchList(search);
             GeneralHelper.hideKeyboard(this);
         }
     }
