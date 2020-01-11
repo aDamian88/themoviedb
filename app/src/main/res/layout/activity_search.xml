@@ -9,8 +9,9 @@
 
     <LinearLayout
         android:id="@+id/search_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,87 +24,28 @@
             android:orientation="horizontal"
             android:padding="4dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_username"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:textColorHint="?attr/colorPrimaryDark"
-                tools:ignore="MissingConstraints">
-
-
-                <EditText
-                    android:id="@+id/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="?attr/colorPrimaryDark"
-                    android:hint="@string/search"
-                    android:singleLine="true"
-                    android:textColor="?attr/colorPrimaryDark"
-                    android:textColorHighlight="@color/colorAccent"
-                    android:textColorHint="?attr/colorPrimaryDark"
-                    android:textColorLink="?attr/colorPrimaryDark"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/cardSearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginLeft="2dp"
-                android:layout_weight="0.3"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                app:cardBackgroundColor="?attr/colorPrimaryDark">
-
-                <ImageView
-                    android:id="@+id/im_search"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:contentDescription="image_description"
-                    app:srcCompat="@mipmap/search" />
-
-            </androidx.cardview.widget.CardView>
-            <TextView
-                android:id="@+id/tv_title"
+            <SearchView
+                android:id="@+id/search_view_movie"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/watchlist"
-                android:gravity="center"
-                android:textColor="?attr/colorPrimaryDark"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:shadowColor="?attr/colorAccent"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2"
-                android:typeface="sans"/>
+                android:layout_height="wrap_content"
+                android:outlineSpotShadowColor="#ffff"
+                android:background="@color/colorPrimary" />
         </LinearLayout>
 
 
     </LinearLayout>
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_movie_list"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="10dp"
+        android:layout_weight="0.6"
         android:foregroundGravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_toolbar">
 
@@ -113,7 +55,8 @@
         android:id="@+id/bottom_toolbar"
         layout="@layout/bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 

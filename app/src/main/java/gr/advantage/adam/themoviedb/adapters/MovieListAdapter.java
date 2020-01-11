@@ -54,12 +54,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 if (!generalHelper.isOnline(context)) {
                     Toast.makeText(context,"Needs internet connection",Toast.LENGTH_LONG).show();
                 }else {
-                    saveItemTemporary(cardListItem);
+//                    saveItemTemporary(cardListItem);
                     Integer id = cardListItem.getId();
                     Intent myIntent = new Intent(context, DetailsActivity.class);
                     myIntent.putExtra("id", id);
-                    String type = cardListItem.getType();
-                    myIntent.putExtra("type", type);
                     context.startActivity(myIntent);
                 }
             }
