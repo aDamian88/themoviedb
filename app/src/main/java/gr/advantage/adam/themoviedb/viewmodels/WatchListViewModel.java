@@ -19,7 +19,7 @@ public class WatchListViewModel extends ViewModel {
     }
 
     public void init(String searchQuery){
-        movieRepository = movieRepository.getInstance();
+        movieRepository = MovieRepository.getInstance();
         localMovies = movieRepository.getMoviesFromDB(searchQuery);
     }
 

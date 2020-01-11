@@ -1,19 +1,14 @@
 package gr.advantage.adam.themoviedb.helpers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.google.gson.JsonObject;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.api.RetrofitService;
 import retrofit2.Call;
@@ -55,7 +50,7 @@ public class TrailerHandler {
 
     }
 
-    public static void decodingVideoResponse(String response) {
+    private static void decodingVideoResponse(String response) {
 
         try {
             JSONObject videoResponse = new JSONObject(response);

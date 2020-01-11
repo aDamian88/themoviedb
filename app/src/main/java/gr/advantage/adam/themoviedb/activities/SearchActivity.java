@@ -5,12 +5,10 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -33,10 +31,19 @@ public class SearchActivity extends AppCompatActivity {
     private final ArrayList<SearchObject> searchObjects = new ArrayList<>();
     private RecyclerView recyclerView;
     private final BottomMenu bottomMenu = new BottomMenu(this);
-    private LinearLayoutManager layoutManager;
     private final PrefsHandler prefsHandler = new PrefsHandler();
-    RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
     private static final String TAG = "SearchActivity";
+    private String queryValue="";
+    private SearchObjectViewModel searchObjectViewModel;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchObserve(searchObjectViewModel, queryValue);
+        prefsHandler.putScreenToPrefs(this, "Search","lastScreen");
+        bottomMenu.initBottomMenu();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +58,14 @@ public class SearchActivity extends AppCompatActivity {
         SearchView searchView = findViewById(R.id.search_view_movie);
         searchView.setQueryHint(getResources().getString(R.string.web_search));
 
-        SearchObjectViewModel searchObjectViewModel = ViewModelProviders.of(Objects.requireNonNull(this)).get(SearchObjectViewModel.class);
+        searchObjectViewModel = ViewModelProviders.of(Objects.requireNonNull(this)).get(SearchObjectViewModel.class);
 
         RxSearchView.queryTextChanges(searchView)
                 .debounce(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(charSequence ->
                 {
-                    String queryValue = String.valueOf(charSequence);
+                    queryValue = String.valueOf(charSequence);
                     searchObserve(searchObjectViewModel, queryValue);
 
                 });
@@ -66,12 +73,11 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_movie_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.isClickable();
-        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.stopScroll();
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setFocusable(true);
-
 
         prefsHandler.putScreenToPrefs(this, "Search","lastScreen");
         bottomMenu.initBottomMenu();
@@ -86,7 +92,6 @@ public class SearchActivity extends AppCompatActivity {
             if (objectResponse != null && !objectResponse.isEmpty()) {
                 imTheMovieDb.setVisibility(View.GONE);
                 if (searchObjects.size() > 0) clear();
-                Log.d(TAG, "onCreate: " + String.valueOf(objectResponse));
                 searchObjects.addAll(objectResponse);
                 adapter = new MovieListAdapter(searchObjects, this);
                 recyclerView.setAdapter(adapter);

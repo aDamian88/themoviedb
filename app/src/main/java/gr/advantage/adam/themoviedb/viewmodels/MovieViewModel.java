@@ -16,7 +16,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void init(String url){
-        movieRepository = movieRepository.getInstance();
+        movieRepository = MovieRepository.getInstance();
         movieData = movieRepository.getMovieData(url);
     }
 

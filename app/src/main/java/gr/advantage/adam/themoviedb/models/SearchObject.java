@@ -5,14 +5,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
-
-import com.google.gson.annotations.SerializedName;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.ArrayList;
 import java.util.List;
 
 import gr.advantage.adam.themoviedb.database.MyAppDatabase;
@@ -25,13 +17,13 @@ public class SearchObject {
     @NonNull
     String type;
     @ColumnInfo(name="image")
-    String image;
+    private String image;
     @ColumnInfo(name="title")
-    String title;
+    private String title;
     @ColumnInfo(name="release")
-    String release;
+    private String release;
     @ColumnInfo(name="rating")
-    String rating;
+    private String rating;
     @ColumnInfo(name="is_temporary")
     boolean isTemporary;
 
@@ -94,52 +86,6 @@ public class SearchObject {
     public List<SearchObject> getSearchObjectFromDatabase(Context context){
         MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(context);
         return myAppDatabase.MyDao().getSearchObjects();
-    }
-
-    @Ignore
-    public ArrayList<SearchObject> getSearchObjectFromResponse(String response) {
-        ArrayList<SearchObject> searchObjects = new ArrayList<>();
-        try {
-            JSONObject jsonResponse = new JSONObject(response);
-            JSONArray arrayResults = jsonResponse.getJSONArray("results");
-            for (int i = 0; i < arrayResults.length(); i++) {
-                JSONObject jsonResults = arrayResults.getJSONObject(i);
-                // Checking if media_type is person to not decode it, we need only Movies and Tv Shows.
-                if (!jsonResults.getString("media_type").equals("person")) {
-                    searchObjects.add(setDataFromJson(jsonResults));
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return searchObjects;
-    }
-
-    @Ignore
-    private SearchObject setDataFromJson(JSONObject jsonResults) {
-        SearchObject SearchObject = new SearchObject();
-        try {
-            SearchObject.setId(jsonResults.getInt("id"));
-            SearchObject.setImage(jsonResults.getString("poster_path"));
-            if (jsonResults.has("title"))
-                SearchObject.setTitle(jsonResults.getString("title"));// Different decoding
-            if (jsonResults.has("name"))
-                SearchObject.setTitle(jsonResults.getString("name")); // between Movie and TV Show.
-            if (jsonResults.has("release_date"))
-                SearchObject.setRelease(jsonResults.getString("release_date"));
-            if (jsonResults.has("first_air_date"))
-                SearchObject.setRelease(jsonResults.getString("first_air_date"));
-            SearchObject.setRating(jsonResults.getString("vote_average"));
-            SearchObject.setType(jsonResults.getString("media_type"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return SearchObject;
-    }
-
-    public void saveSearchObject(Context context){
-        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabaseFallBack(context);
-        myAppDatabase.MyDao().addSearchObject(this);
     }
 
 }

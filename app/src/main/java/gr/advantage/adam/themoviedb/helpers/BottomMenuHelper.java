@@ -1,11 +1,8 @@
 package gr.advantage.adam.themoviedb.helpers;
 
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-
 import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.activities.SearchActivity;
 import gr.advantage.adam.themoviedb.activities.WatchListActivity;
@@ -15,7 +12,6 @@ class BottomMenuHelper implements View.OnClickListener {
 
     private final Activity activity;
     private final PrefsHandler prefsHandler = new PrefsHandler();
-    private final GeneralHelper generalHelper = new GeneralHelper();
 
     public BottomMenuHelper(Activity activity) {
         this.activity = activity;
@@ -36,7 +32,6 @@ class BottomMenuHelper implements View.OnClickListener {
                 break;
             case R.id.cardWatchlist:
                 if (!currentScreen.equals("Watchlist")) {
-                    generalHelper.deleteTemporaryObjects(activity);
                     Intent cityIntent = new Intent(activity, WatchListActivity.class);
                     cityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     activity.startActivityIfNeeded(cityIntent,0);

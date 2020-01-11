@@ -17,7 +17,6 @@ import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
 import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.activities.DetailsActivity;
 import gr.advantage.adam.themoviedb.api.Api;
-import gr.advantage.adam.themoviedb.database.MyAppDatabase;
 import gr.advantage.adam.themoviedb.models.SearchObject;
 
 
@@ -48,18 +47,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.ratings.setText(cardListItem.getRating());
         Glide.with(context).load(Api.POSTER_URL+cardListItem.getImage()).into(holder.poster);
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!generalHelper.isOnline(context)) {
-                    Toast.makeText(context,"Needs internet connection",Toast.LENGTH_LONG).show();
-                }else {
-//                    saveItemTemporary(cardListItem);
-                    Integer id = cardListItem.getId();
-                    Intent myIntent = new Intent(context, DetailsActivity.class);
-                    myIntent.putExtra("id", id);
-                    context.startActivity(myIntent);
-                }
+        holder.linearLayout.setOnClickListener(view -> {
+            if (!generalHelper.isOnline(context)) {
+                Toast.makeText(context,"Needs internet connection",Toast.LENGTH_LONG).show();
+            }else {
+                Integer id = cardListItem.getId();
+                Intent myIntent = new Intent(context, DetailsActivity.class);
+                myIntent.putExtra("id", id);
+                context.startActivity(myIntent);
             }
         });
 
@@ -90,11 +85,4 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         }
     }
 
-    private void saveItemTemporary(SearchObject searchObject){
-        MyAppDatabase myAppDatabase = MyAppDatabase.getAppDatabase(context);
-        if(myAppDatabase.MyDao().checkIfObjectIsStored(searchObject.getId(),searchObject.getType(),false)==0) {
-            searchObject.setTemporary(true);
-            searchObject.saveSearchObject(context);
-        }
-    }
 }

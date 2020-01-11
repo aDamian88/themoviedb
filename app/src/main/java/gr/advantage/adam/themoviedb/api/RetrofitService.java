@@ -8,8 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitService {
 
-    private static RetrofitService instance;
-
     private static OkHttpClient okClient() {
         return new OkHttpClient.Builder().connectTimeout(30, TimeUnit.MINUTES).writeTimeout(30, TimeUnit.MINUTES).readTimeout(30, TimeUnit.MINUTES).build();
     }
@@ -24,14 +22,4 @@ public class RetrofitService {
         return retrofit.create(Api.class);
     }
 
-    public static synchronized RetrofitService getInstance() {
-        if (instance == null) {
-            instance = new RetrofitService();
-        }
-        return instance;
-    }
-
-    public Api getApi() {
-        return retrofit.create(Api.class);
-    }
 }

@@ -1,18 +1,18 @@
 package gr.advantage.adam.themoviedb.repositories;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.JsonObject;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.api.RetrofitService;
@@ -29,7 +29,7 @@ public class MovieRepository {
     private static final String TAG = "SearchObjectRepository";
     private final MutableLiveData<Movie> movieData;
     private final MutableLiveData<List<Movie>> localMovies;
-    MyAppDatabase myAppDatabase;
+    private final MyAppDatabase myAppDatabase;
 
     public static MovieRepository getInstance() {
         if (instance == null) {
@@ -52,19 +52,18 @@ public class MovieRepository {
         Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + url);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                Movie movie = decodingMovie(response.body().toString());
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+                Movie movie = decodingMovie(Objects.requireNonNull(response.body()).toString());
                 if (movieExists(movie) > 0) {
                     updateMovie(movie);
                     movieData.postValue(myAppDatabase.MyDao().getMovieFromId(movie.getId()));
                 } else {
                     movieData.postValue(decodingMovie(response.body().toString()));
                 }
-                Log.d(TAG, "onResponse: " + String.valueOf(response.body()));
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
@@ -79,7 +78,7 @@ public class MovieRepository {
         return localMovies;
     }
 
-    public Movie decodingMovie(String response) {
+    private Movie decodingMovie(String response) {
         Movie movie = new Movie();
         try {
             JSONObject jsonResponse = new JSONObject(response);
@@ -120,7 +119,7 @@ public class MovieRepository {
         myAppDatabase.MyDao().deleteMovie(movie);
     }
 
-    public void updateMovie(Movie movie) {
+    private void updateMovie(Movie movie) {
         myAppDatabase.MyDao().updateMovie(movie);
     }
 

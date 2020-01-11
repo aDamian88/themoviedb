@@ -23,11 +23,5 @@ public abstract class MyAppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public static MyAppDatabase getAppDatabase(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), MyAppDatabase.class, "movie_db").allowMainThreadQueries().build();
-        }
-        return INSTANCE;
-    }
 
 }

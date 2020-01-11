@@ -1,21 +1,24 @@
 package gr.advantage.adam.themoviedb.activities;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.bumptech.glide.Glide;
+
 import java.util.Objects;
+
+import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.helpers.DateFormatter;
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
-import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.helpers.TrailerHandler;
 import gr.advantage.adam.themoviedb.models.Movie;
@@ -38,9 +41,14 @@ public class DetailsActivity extends AppCompatActivity {
     private final BottomMenu bottomMenu = new BottomMenu(this);
     private final GeneralHelper generalHelper = new GeneralHelper();
     private final PrefsHandler prefsHandler = new PrefsHandler();
-    ImageView imSave;
-    CardView cardSave;
+    private ImageView imSave;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        prefsHandler.putScreenToPrefs(this, "Details","lastScreen");
+        bottomMenu.initBottomMenu();
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -62,7 +70,7 @@ public class DetailsActivity extends AppCompatActivity {
         String url = "movie/" + id + "?api_key=" + Api.AUTH_KEY;
 
         //// Handle save ///////////
-        cardSave = findViewById(R.id.cardSave);
+        CardView cardSave = findViewById(R.id.cardSave);
         imSave = findViewById(R.id.im_save);
 
         MovieViewModel movieViewModel = ViewModelProviders.of(Objects.requireNonNull(this)).get(MovieViewModel.class);
@@ -76,35 +84,28 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        cardSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(movie!=null && saveInstance!=null) {
-                    MovieRepository movieRepository = MovieRepository.getInstance();
-                    if (saveInstance > 0) {
-                        movieRepository.deleteMovie(movie);
-                        getMovieInstance();
-                    } else {
-                        movieRepository.saveMovie(movie);
-                        getMovieInstance();
-                    }
+        cardSave.setOnClickListener(view -> {
+            if(movie!=null && saveInstance!=null) {
+                MovieRepository movieRepository = MovieRepository.getInstance();
+                if (saveInstance > 0) {
+                    movieRepository.deleteMovie(movie);
+                    getMovieInstance();
+                } else {
+                    movieRepository.saveMovie(movie);
+                    getMovieInstance();
                 }
             }
         });
 
         /////////// Handle trailer /////////
         CardView cardTrailer = findViewById(R.id.cardTrailer);
-        cardTrailer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!generalHelper.isOnline(DetailsActivity.this)) {
-                    Toast.makeText(DetailsActivity.this, "Needs internet connection", Toast.LENGTH_LONG).show();
-                } else {
-                    TrailerHandler.showTrailer(id);
-                }
+        cardTrailer.setOnClickListener(view -> {
+            if (!generalHelper.isOnline(DetailsActivity.this)) {
+                Toast.makeText(DetailsActivity.this, "Needs internet connection", Toast.LENGTH_LONG).show();
+            } else {
+                TrailerHandler.showTrailer(id);
             }
         });
-
 
         prefsHandler.putScreenToPrefs(this, "Details","lastScreen");
         bottomMenu.initBottomMenu();

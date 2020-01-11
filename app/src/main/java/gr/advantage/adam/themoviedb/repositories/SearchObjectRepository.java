@@ -3,11 +3,15 @@ package gr.advantage.adam.themoviedb.repositories;
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import com.google.gson.JsonObject;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import gr.advantage.adam.themoviedb.api.Api;
 import gr.advantage.adam.themoviedb.api.RetrofitService;
 import gr.advantage.adam.themoviedb.models.SearchObject;
@@ -42,13 +46,12 @@ public class SearchObjectRepository {
         Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "search/movie?api_key=" + Api.AUTH_KEY + "&query=" + search + "&page=" + 1);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                searchList.postValue(getSearchObjectFromResponse(response.body().toString()));
-                Log.d(TAG, "onResponse: "+String.valueOf(response.body()));
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+                searchList.postValue(getSearchObjectFromResponse(Objects.requireNonNull(response.body()).toString()));
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
                 Log.d(TAG, "onFailure: "+ t.getMessage());
             }
         });
@@ -60,13 +63,12 @@ public class SearchObjectRepository {
         Call<JsonObject> call = api.getSearchResult(Api.BASE_URL + "movie/popular?api_key=" + Api.AUTH_KEY);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                searchList.postValue(getSearchObjectFromResponse(response.body().toString()));
-                Log.d(TAG, "onResponse: "+String.valueOf(response.body()));
+            public void onResponse(@NotNull Call<JsonObject> call, @NotNull Response<JsonObject> response) {
+                searchList.postValue(getSearchObjectFromResponse(Objects.requireNonNull(response.body()).toString()));
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
                 Log.d(TAG, "onFailure: "+ t.getMessage());
             }
         });
@@ -77,7 +79,7 @@ public class SearchObjectRepository {
 
 
 
-    public List<SearchObject> getSearchObjectFromResponse(String response) {
+    private List<SearchObject> getSearchObjectFromResponse(String response) {
         ArrayList<SearchObject> searchObjects = new ArrayList<>();
         try {
             JSONObject jsonResponse = new JSONObject(response);

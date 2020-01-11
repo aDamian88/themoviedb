@@ -6,19 +6,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import com.jakewharton.rxbinding3.widget.RxSearchView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
 import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.adapters.MovieListAdapter;
 import gr.advantage.adam.themoviedb.R;
@@ -35,9 +31,18 @@ public class WatchListActivity extends AppCompatActivity {
     private final BottomMenu bottomMenu = new BottomMenu(this);
     private final PrefsHandler prefsHandler = new PrefsHandler();
     private static final String TAG = "WatchListActivity";
-    RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
     private ImageView imTheMovieDb;
+    private String queryValue="";
+    private WatchListViewModel watchListViewModel;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        watchListObserve(watchListViewModel, queryValue);
+        prefsHandler.putScreenToPrefs(this, "Watchlist","lastScreen");
+        bottomMenu.initBottomMenu();
+    }
 
 
     @Override
@@ -46,8 +51,6 @@ public class WatchListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         imTheMovieDb = findViewById(R.id.iv_the_movie_db);
-
-        ImageView imTheMovieDB = findViewById(R.id.iv_the_movie_db);
 
         recyclerView = findViewById(R.id.recycler_movie_list);
         recyclerView.setHasFixedSize(true);
@@ -59,7 +62,7 @@ public class WatchListActivity extends AppCompatActivity {
 
         SearchObject searchObject = new SearchObject();
         searchObjects.addAll(searchObject.getSearchObjectFromDatabase(this));
-        if(searchObjects.size()>0) imTheMovieDB.setVisibility(View.GONE);
+        if(searchObjects.size()>0) imTheMovieDb.setVisibility(View.GONE);
         initMovieList();
 
         prefsHandler.putScreenToPrefs(this, "Watchlist","lastScreen");
@@ -71,13 +74,13 @@ public class WatchListActivity extends AppCompatActivity {
         SearchView searchView = findViewById(R.id.search_view_movie);
         searchView.setQueryHint(getResources().getString(R.string.watchlist_search));
 
-        WatchListViewModel watchListViewModel= ViewModelProviders.of(Objects.requireNonNull(this)).get(WatchListViewModel.class);
+        watchListViewModel= ViewModelProviders.of(Objects.requireNonNull(this)).get(WatchListViewModel.class);
         RxSearchView.queryTextChanges(searchView)
                 .debounce(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(charSequence ->
                 {
-                    String queryValue = String.valueOf(charSequence);
+                    queryValue = String.valueOf(charSequence);
                     watchListObserve(watchListViewModel,queryValue);
 
                 });
@@ -101,9 +104,6 @@ public class WatchListActivity extends AppCompatActivity {
                 adapter = new MovieListAdapter(searchObjects, this);
                 recyclerView.setAdapter(adapter);
             }
-            prefsHandler.putScreenToPrefs(this, "Watchlist","lastScreen");
-            bottomMenu.initBottomMenu();
-
         });
     }
 

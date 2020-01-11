@@ -3,10 +3,6 @@ package gr.advantage.adam.themoviedb.models;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 @Entity(tableName = "Movies")
 public class Movie {
 
@@ -93,31 +89,4 @@ public class Movie {
         this.vote = vote;
     }
 
-    public Movie decodingMovie(String response){
-        Movie movie = new Movie();
-        try {
-            JSONObject jsonResponse = new JSONObject(response);
-            movie.setId(jsonResponse.getInt("id"));
-            movie.setImage(jsonResponse.getString("poster_path"));
-            movie.setTitle(jsonResponse.getString("title"));
-            movie.setSummary(jsonResponse.getString("overview"));
-            String genre = getFirstGenre(jsonResponse.getString("genres"));
-            movie.setGenre(genre);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return movie;
-    }
-
-    private String getFirstGenre(String genreList){
-        String genre="";
-        try {
-            JSONArray genreArray = new JSONArray(genreList);
-            JSONObject genreObject = genreArray.getJSONObject(0);
-            genre = genreObject.getString("name");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return genre;
-    }
 }
