@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding3.widget.RxSearchView;
 
@@ -64,8 +65,13 @@ public class WatchListActivity extends AppCompatActivity {
         prefsHandler.putScreenToPrefs(this, "Watchlist","lastScreen");
         bottomMenu.initBottomMenu();
 
-        WatchListViewModel watchListViewModel= ViewModelProviders.of(Objects.requireNonNull(this)).get(WatchListViewModel.class);
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText(getResources().getString(R.string.watchlist));
+
         SearchView searchView = findViewById(R.id.search_view_movie);
+        searchView.setQueryHint(getResources().getString(R.string.watchlist_search));
+
+        WatchListViewModel watchListViewModel= ViewModelProviders.of(Objects.requireNonNull(this)).get(WatchListViewModel.class);
         RxSearchView.queryTextChanges(searchView)
                 .debounce(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,6 +101,9 @@ public class WatchListActivity extends AppCompatActivity {
                 adapter = new MovieListAdapter(searchObjects, this);
                 recyclerView.setAdapter(adapter);
             }
+            prefsHandler.putScreenToPrefs(this, "Watchlist","lastScreen");
+            bottomMenu.initBottomMenu();
+
         });
     }
 

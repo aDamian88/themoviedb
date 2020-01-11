@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -43,10 +45,13 @@ public class SearchActivity extends AppCompatActivity {
 
         imTheMovieDb = findViewById(R.id.iv_the_movie_db);
 
+        TextView tvTitle = findViewById(R.id.tv_title);
+        tvTitle.setText(getResources().getString(R.string.themoviedb_search));
+
         SearchView searchView = findViewById(R.id.search_view_movie);
+        searchView.setQueryHint(getResources().getString(R.string.web_search));
 
         SearchObjectViewModel searchObjectViewModel = ViewModelProviders.of(Objects.requireNonNull(this)).get(SearchObjectViewModel.class);
-
 
         RxSearchView.queryTextChanges(searchView)
                 .debounce(1000, TimeUnit.MILLISECONDS)

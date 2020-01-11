@@ -10,7 +10,8 @@
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:background="?attr/colorPrimary"
         tools:ignore="MissingConstraints">
 
@@ -122,52 +123,60 @@
 
     </LinearLayout>
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0.6"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <include
-            android:id="@+id/movie_layout"
-            layout="@layout/movie_layout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="title"
-            android:textColor="#01d277"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_movie_summary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_title"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="0dp"
-            android:padding="8dp"
-            android:text="summary"
-            android:textColor="#ffff"
-            android:textSize="15dp"
-            android:textStyle="bold" />
 
-    </LinearLayout>
+            <include
+                android:id="@+id/movie_layout"
+                layout="@layout/movie_layout"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="title"
+                android:textColor="#01d277"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_movie_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_title"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="0dp"
+                android:padding="8dp"
+                android:text="summary"
+                android:textColor="#ffff"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <include
         android:id="@+id/bottom_toolbar"
         layout="@layout/bottom_menu"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
         android:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 

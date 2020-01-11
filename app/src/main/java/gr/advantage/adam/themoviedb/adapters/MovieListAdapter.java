@@ -45,7 +45,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         holder.objectName.setText(cardListItem.getTitle());
         holder.releaseDate.setText(cardListItem.getRelease());
-        holder.ratings.setText(cardListItem.getRating() + "% ");
+        holder.ratings.setText(cardListItem.getRating());
         Glide.with(context).load(Api.POSTER_URL+cardListItem.getImage()).into(holder.poster);
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
