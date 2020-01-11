@@ -1,7 +1,6 @@
 package gr.advantage.adam.themoviedb.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
@@ -26,7 +24,6 @@ import gr.advantage.adam.themoviedb.R;
 import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.models.Movie;
 import gr.advantage.adam.themoviedb.models.SearchObject;
-import gr.advantage.adam.themoviedb.viewmodels.SearchObjectViewModel;
 import gr.advantage.adam.themoviedb.viewmodels.WatchListViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
@@ -75,7 +72,6 @@ public class WatchListActivity extends AppCompatActivity {
                 .subscribe(charSequence ->
                 {
                     String queryValue = String.valueOf(charSequence);
-//                    searchObserve(searchObjectViewModel, queryValue);
                     watchListObserve(watchListViewModel,queryValue);
 
                 });
@@ -95,7 +91,6 @@ public class WatchListActivity extends AppCompatActivity {
             if (objectResponse != null && !objectResponse.isEmpty()) {
                 imTheMovieDb.setVisibility(View.GONE);
                 if (searchObjects.size() > 0) clear();
-                Log.d(TAG, "onCreate: " + String.valueOf(objectResponse));
                 searchObjects.addAll(searchObjectConverter(objectResponse));
                 adapter = new MovieListAdapter(searchObjects, this);
                 recyclerView.setAdapter(adapter);

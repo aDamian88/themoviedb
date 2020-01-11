@@ -16,6 +16,7 @@ import gr.advantage.adam.themoviedb.helpers.BottomMenu;
 import gr.advantage.adam.themoviedb.helpers.DateFormatter;
 import gr.advantage.adam.themoviedb.helpers.GeneralHelper;
 import gr.advantage.adam.themoviedb.R;
+import gr.advantage.adam.themoviedb.helpers.PrefsHandler;
 import gr.advantage.adam.themoviedb.helpers.TrailerHandler;
 import gr.advantage.adam.themoviedb.models.Movie;
 import gr.advantage.adam.themoviedb.repositories.MovieRepository;
@@ -36,6 +37,7 @@ public class DetailsActivity extends AppCompatActivity {
     private Integer saveInstance;
     private final BottomMenu bottomMenu = new BottomMenu(this);
     private final GeneralHelper generalHelper = new GeneralHelper();
+    private final PrefsHandler prefsHandler = new PrefsHandler();
     ImageView imSave;
     CardView cardSave;
 
@@ -103,6 +105,8 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+
+        prefsHandler.putScreenToPrefs(this, "Details","lastScreen");
         bottomMenu.initBottomMenu();
     }
 
