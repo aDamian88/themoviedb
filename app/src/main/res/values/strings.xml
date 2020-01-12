@@ -7,7 +7,7 @@
     <string name="watchlist">Watchlist</string>
     <string name="about">About</string>
     <string name="trailer">Trailer</string>
-    <string name="about_message">An easy to use Android mobile app that searches for Movies and TV shows. Moreover, the user can keep his personal watch list by storing the movies and TV shows at the device storage.\n\nDeveloped by: \nAlexandros Damianakis</string>
+    <string name="about_message">An easy to use Android mobile app for searching movies. The app displays some basic information and the trailer of a movie. Moreover, the user can keep his personal watch list by storing the movies at the device storage.\n\nEnjoy!</string>
     <string name="themoviedb_search">TheMovieDb Search</string>
     <string name="web_search">Search to Web</string>
     <string name="watchlist_search">Search to Watchlist</string>
