@@ -128,5 +128,4 @@ public class WatchListActivity extends AppCompatActivity {
         searchObjects.clear();
         adapter.notifyItemRangeRemoved(0, size);
     }
-
 }
